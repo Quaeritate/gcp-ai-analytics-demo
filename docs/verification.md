@@ -19,7 +19,11 @@
 | Evaluation corpus | 24 fixtures validated locally; zero inference requests; model accuracy unmeasured |
 | SDK behavior | In-process HTTP tests check schema serialization, disabled retry/continuation and ADC precedence over ambient test keys |
 | Public content review | Outgoing files checked for credential patterns, private paths and infrastructure context; fixtures are generated synthetic data |
-| Hosted CI | Windows/Linux workflow prepared; hosted run result recorded after publication |
+| Hosted CI | **Passed on Windows and Linux**, Python 3.12, for implementation commit `52a35f5`; [observed run](https://github.com/Quaeritate/gcp-ai-analytics-demo/actions/runs/39834905000) |
+
+Published at [Quaeritate/gcp-ai-analytics-demo](https://github.com/Quaeritate/gcp-ai-analytics-demo).
+Commit author and committer: **Matej Bicej**. The hosted workflow also reproduced
+the committed example and validated the evaluation corpus without inference.
 
 No live Google Cloud operation, private server collection, notification or
 remediation has been performed. Local fixtures, injected clients and HTTP mock
