@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer"><title>Server &amp; App Operations Insights · Synthetic report</title>
+<style>
+:root{color-scheme:light;--ink:#172c3c;--muted:#587080;--line:#dce5e9;--paper:#f3f6f7;
+--teal:#14756d;--amber:#8a5300;--red:#a63739;--navy:#102b3b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);
+color:var(--ink);font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+a{color:inherit}a:focus-visible,summary:focus-visible{outline:3px solid #dc9100;outline-offset:4px}
+.skip{position:absolute;left:16px;top:-80px;background:white;padding:12px;z-index:10}
+.skip:focus{top:16px}.shell{max-width:1400px;margin:auto;padding:0 44px}
+.topbar{background:var(--navy);color:#dbe8ed}.topbar .shell{display:flex;justify-content:space-between;
+align-items:center;gap:20px;min-height:72px}.brand{font-weight:650;letter-spacing:.02em;
+display:flex;align-items:center;gap:12px}.brand-mark{font-size:26px;color:#73d5c4}
+.topbar nav{display:flex;gap:24px;font-size:12px}.topbar a{text-decoration:none}
+.hero{padding:40px 0 30px;display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+.eyebrow{text-transform:uppercase;font-size:10px;letter-spacing:.12em;font-weight:700;color:var(--muted)}
+h1{font-size:clamp(28px,3vw,42px);line-height:1.15;letter-spacing:-.04em;margin:10px 0 12px;
+font-weight:650}h2{font-size:21px;letter-spacing:-.025em;line-height:1.25;margin:0}
+h3{font-size:14px;font-weight:650;line-height:1.5;margin:0}.hero p{margin:0;color:var(--muted);
+max-width:650px}.hero-meta{text-align:right;flex-shrink:0;font-size:12px}.hero-meta p{margin-top:8px}
+.badge{display:inline-block;border:1px solid #cbd7de;background:#edf2f5;color:#466174;
+border-radius:5px;padding:3px 8px;font-size:10px;line-height:1.5;letter-spacing:.02em;font-weight:650}
+.badge.teal{color:#11685f;border-color:#b5dbd2;background:#e9f6f0}
+.badge.amber{color:#815000;border-color:#e7ce9e;background:#fff5df}
+.badge.red{color:#962d32;border-color:#ebbec1;background:#fff0f0}
+.synthetic{border-radius:30px;padding:5px 12px;letter-spacing:.08em;text-transform:uppercase}
+.scope-note{background:#e9f0f3;border:1px solid #d3e1e6;border-left:3px solid #2b7d82;
+border-radius:5px;padding:12px 16px;color:#3b5a6b;font-size:12px;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:34px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px 22px}
+.stat strong{display:block;font-size:38px;letter-spacing:-.05em;line-height:1.2;margin:7px 0}
+.stat small{color:var(--muted);font-size:11px}.stat.red strong{color:var(--red)}
+.stat.amber strong{color:var(--amber)}.section{margin-bottom:32px;scroll-margin-top:20px}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:0 0 16px}
+.section-heading p{color:var(--muted);font-size:12px;margin:5px 0 0}.section-index{color:#8da2ad;
+font-size:11px;letter-spacing:.1em;font-weight:700;margin-right:10px}
+.findings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.finding{border:1px solid var(--line);border-left:3px solid #8ba8b3;background:#fff;
+border-radius:6px;padding:15px 18px;min-width:0}.finding.red{border-left-color:#c15054}
+.finding.amber{border-left-color:#c8973c}.finding.teal{border-left-color:#3f9b90}
+.finding-meta{display:flex;align-items:center;gap:12px;margin-bottom:9px;color:var(--muted);font-size:11px}
+.finding-code{font-family:Consolas,monospace;color:#647e8e;font-size:10px;margin:7px 0 10px}
+.more-findings{margin-top:14px;border:1px solid var(--line);padding:12px 16px;border-radius:6px}
+.more-findings>.findings-grid{margin-top:14px}.mono{font-family:Consolas,"SFMono-Regular",monospace}
+details summary{cursor:pointer;font-size:11px;color:#365f73;font-weight:600;width:fit-content}
+details[open]>summary{margin-bottom:12px}pre{font:11px/1.65 Consolas,monospace;white-space:pre-wrap;
+overflow-wrap:anywhere;border-radius:5px;background:#edf3f5;padding:14px;margin:10px 0 0}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);background:#fff;border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
+caption{text-align:left;padding:16px 18px;color:var(--muted);font-size:11px;caption-side:bottom}
+thead{background:#eaf0f3;color:#486474}thead th{font-size:10px;white-space:nowrap;letter-spacing:.025em}
+th,td{padding:16px 18px;border-bottom:1px solid #e6edef}tbody tr:last-child>*{border-bottom:0}
+th[scope=row]{font-weight:600}.numeric{font-variant-numeric:tabular-nums;text-align:right}
+td small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:20px;min-width:0}
+.card-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:22px}
+.resource-metric{margin-bottom:16px}.resource-metric>div:first-child{display:flex;
+justify-content:space-between;font-size:11px;margin-bottom:7px}.resource-metric strong{font-weight:650}
+.track{height:6px;background:#e5eef0;border-radius:10px;overflow:hidden}.track span{display:block;
+height:100%;background:#31988c;border-radius:10px}.historical .track span{background:#94a7b1}
+.track.absent{background:repeating-linear-gradient(90deg,#d9e2e7 0,#d9e2e7 5px,transparent 5px,
+transparent 9px)}.mini-facts{margin:22px 0 18px;font-size:11px}.mini-facts>div{display:flex;
+justify-content:space-between;gap:10px;padding:5px 0}.mini-facts dt{color:var(--muted)}
+.mini-facts dd{margin:0;text-align:right}.protection-row{display:flex;align-items:center;
+justify-content:space-between;gap:12px;margin-top:20px}.age{display:block;font-size:25px;
+font-weight:600;letter-spacing:-.03em;margin-top:4px}.divided{border-top:1px solid var(--line);padding-top:18px}
+.muted{color:var(--muted);font-size:11px;margin:8px 0 18px}.footnote{font-size:11px;color:var(--muted);
+margin-top:12px}.evidence-panel{background:#e8eff2;border:1px solid #d5e1e6;border-radius:8px;padding:20px}
+.evidence-panel ul{padding-left:20px;color:#476372;font-size:12px}.evidence-panel li{margin-bottom:8px}
+.provenance{display:grid;grid-template-columns:1fr 2fr;gap:16px;margin:16px 0;font-size:11px}
+.provenance dt{color:var(--muted)}.provenance dd{margin:0;overflow-wrap:anywhere}
+.empty{padding:20px;border:1px dashed #c5d4dc;color:var(--muted)}
+footer{border-top:1px solid #d5e1e6;margin-top:36px;padding:22px 0 32px;display:flex;
+justify-content:space-between;gap:16px;font-size:11px;color:var(--muted)}
+@media(max-width:950px){.shell{padding:0 24px}.cards{grid-template-columns:1fr}.hero{align-items:flex-start;
+flex-direction:column}.hero-meta{text-align:left}.protection-row{justify-content:flex-start;gap:24px}
+.card-top{justify-content:flex-start;gap:16px}.stats{gap:10px}.stat{padding:16px}}
+@media(max-width:600px){.shell{padding:0 16px}.topbar nav{gap:12px;font-size:11px}.brand{font-size:11px;
+gap:6px}.brand-mark{font-size:22px}.topbar .shell{min-height:60px}.hero{padding-top:26px}
+.stats{grid-template-columns:repeat(2,1fr);gap:10px}.findings-grid{grid-template-columns:1fr}
+.section-heading{align-items:flex-start}.section-index{display:none}.stat strong{font-size:32px}
+th,td{padding:13px}.hero-meta{font-size:11px}.provenance{grid-template-columns:1fr;gap:6px}
+footer{flex-direction:column}.scope-note{font-size:11px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{body{background:#fff;font-size:10px}.shell{max-width:none;padding:0}.topbar{background:#fff;
+color:var(--ink);border-bottom:1px solid #bbb}.topbar nav,.skip{display:none}.hero{padding:20px 0}
+.hero-meta{text-align:left}h1{font-size:28px}.stats{margin-bottom:20px}.stat{padding:12px}
+.stat strong{font-size:25px}.card,.finding,.stat,tr{break-inside:avoid}.cards{grid-template-columns:1fr}
+.section{break-inside:auto;margin-bottom:22px}.table-wrap{overflow:visible}th,td{padding:8px}
+details>summary{font-size:10px}.more-findings>*,details>pre{display:block!important}
+.findings-grid{grid-template-columns:1fr}.provenance{grid-template-columns:1fr 2fr}footer{margin-top:16px}
+*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style></head><body>
+<a class="skip" href="#overview">Skip to report</a>
+<header class="topbar"><div class="shell"><div class="brand"><span class="brand-mark" aria-hidden="true">▦</span> OPERATIONS INSIGHTS</div>
+<nav aria-label="Report sections"><a href="#attention">Attention</a><a href="#services">Services</a><a href="#evidence">Evidence</a></nav></div></header>
+<main id="overview" class="shell">
+<div class="hero"><div><span class="eyebrow">Server &amp; App Operations Insights / Snapshot report</span>
+<h1>Know what needs attention.</h1><p>Service checks, resource pressure, recovery evidence and unfinished work.<br>Every observation is backed by inspectable facts.</p></div>
+<div class="hero-meta"><span class="badge teal synthetic">Synthetic demonstration</span>
+<p>Cutoff (exclusive): <span class="mono">2026-10-19T00:00:00+00:00</span><br>
+Window begins: <span class="mono">2026-09-21T00:00:00+00:00</span></p></div></div>
+<div class="scope-note"><strong>Reproducible local snapshot.</strong> All observations are synthetic and do not describe an actual server. Freshness is evaluated at the fixed report cutoff, not the time you open this file.</div>
+<div class="stats" aria-label="Report summary">
+<div class="stat"><span class="eyebrow">Services in scope</span><strong>3</strong><small>Generic demonstration aliases</small></div>
+<div class="stat red"><span class="eyebrow">Critical observations</span><strong>4</strong><small>Findings, not distinct incidents</small></div>
+<div class="stat amber"><span class="eyebrow">Warnings</span><strong>15</strong><small>Thresholds and evidence gaps</small></div>
+<div class="stat"><span class="eyebrow">Stale data feeds</span><strong>2</strong><small>Checks + resources · 0 freshness unknown</small></div>
+</div>
+<section class="section" id="attention" aria-labelledby="attention-title"><div class="section-heading"><div>
+<h2 id="attention-title"><span class="section-index">01</span>Attention queue</h2><p>Ordered by rule severity. Open a finding to see its supporting measurements.</p></div>
+<span class="badge">21 observations</span></div><div class="findings-grid"><article class="finding red"><div class="finding-meta"><span class="badge red">critical</span><span class="mono">compute</span></div><h3>The latest storage pool observation reports degraded.</h3><p class="finding-code">pool_degraded</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 1.0,
+  &quot;event_id&quot;: &quot;resource-compute-0671&quot;,
+  &quot;observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;pool_health&quot;: &quot;degraded&quot;
+}</pre></details></article><article class="finding red"><div class="finding-meta"><span class="badge red">critical</span><span class="mono">documents</span></div><h3>Free inodes are low in the latest sample.</h3><p class="finding-code">free_inodes_low</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 1.0,
+  &quot;critical_threshold_pct&quot;: 5,
+  &quot;event_id&quot;: &quot;resource-documents-0671&quot;,
+  &quot;free_inodes_pct&quot;: 4.0,
+  &quot;observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;warning_threshold_pct&quot;: 10
+}</pre></details></article><article class="finding red"><div class="finding-meta"><span class="badge red">critical</span><span class="mono">documents</span></div><h3>The latest fresh service check reports down.</h3><p class="finding-code">latest_check_down</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 1.0,
+  &quot;event_id&quot;: &quot;check-documents-0671&quot;,
+  &quot;observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;observed_status&quot;: &quot;down&quot;
+}</pre></details></article><article class="finding red"><div class="finding-meta"><span class="badge red">critical</span><span class="mono">photos</span></div><h3>The latest recorded restore test failed.</h3><p class="finding-code">latest_restore_failed</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_at&quot;: &quot;2026-10-17T00:00:00+00:00&quot;,
+  &quot;event_id&quot;: &quot;restore-photos&quot;,
+  &quot;last_passed_restore_at&quot;: null
+}</pre></details></article></div><details class="more-findings"><summary>17 more observations · expand to review all evidence</summary><div class="findings-grid"><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">compute</span></div><h3>Some expected monitoring slots have no known up/down observation.</h3><p class="finding-code">monitoring_coverage_gap</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;expected_slots&quot;: 672,
+  &quot;known_status_slots&quot;: 659,
+  &quot;missing_slots&quot;: 0,
+  &quot;monitoring_coverage_pct&quot;: 98.07,
+  &quot;unknown_slots&quot;: 13
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">compute</span></div><h3>The most recent successful restore test exceeds its configured age target.</h3><p class="finding-code">restore_test_overdue</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_days&quot;: 40.0,
+  &quot;completed_at&quot;: &quot;2026-09-09T00:00:00+00:00&quot;,
+  &quot;event_id&quot;: &quot;restore-compute&quot;,
+  &quot;max_age_days&quot;: 30.0
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>Some job runs are blocked at the report cutoff.</h3><p class="finding-code">blocked_job_runs</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;blocked_runs&quot;: 1
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>Some job runs completed with a final failure during the reporting window.</h3><p class="finding-code">failed_job_runs</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_runs&quot;: 55,
+  &quot;failed_runs&quot;: 4,
+  &quot;failure_categories&quot;: {
+    &quot;dependency_unavailable&quot;: 4
+  }
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>The latest recorded backup attempt failed.</h3><p class="finding-code">latest_backup_failed</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+  &quot;event_id&quot;: &quot;backup-documents-27&quot;,
+  &quot;last_success_at&quot;: &quot;2026-10-17T02:00:00+00:00&quot;
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>Memory utilization exceeds the demonstration threshold in the latest sample.</h3><p class="finding-code">memory_high</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 1.0,
+  &quot;critical_threshold_pct&quot;: 95,
+  &quot;event_id&quot;: &quot;resource-documents-0671&quot;,
+  &quot;metric&quot;: &quot;memory_pct&quot;,
+  &quot;observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;value_pct&quot;: 94.0,
+  &quot;warning_threshold_pct&quot;: 85
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>Some expected monitoring slots have no known up/down observation.</h3><p class="finding-code">monitoring_coverage_gap</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;expected_slots&quot;: 672,
+  &quot;known_status_slots&quot;: 636,
+  &quot;missing_slots&quot;: 24,
+  &quot;monitoring_coverage_pct&quot;: 94.64,
+  &quot;unknown_slots&quot;: 12
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">documents</span></div><h3>Some pending job runs exceed the configured pending-age target.</h3><p class="finding-code">pending_jobs_old</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_target_hours&quot;: 4.0,
+  &quot;job_ids&quot;: [
+    &quot;job-documents-054&quot;
+  ],
+  &quot;oldest_pending_age_hours&quot;: 20.0,
+  &quot;stale_pending_runs&quot;: 1
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>The most recent successful backup exceeds its configured age target.</h3><p class="finding-code">backup_overdue</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 94.0,
+  &quot;event_id&quot;: &quot;backup-photos-24&quot;,
+  &quot;last_success_at&quot;: &quot;2026-10-15T02:00:00+00:00&quot;,
+  &quot;max_age_hours&quot;: 48.0
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>The latest service check is too old to describe current status.</h3><p class="finding-code">checks_stale</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 13.0,
+  &quot;event_id&quot;: &quot;check-photos-0659&quot;,
+  &quot;freshness_limit_seconds&quot;: 7200,
+  &quot;observed_at&quot;: &quot;2026-10-18T11:00:00+00:00&quot;,
+  &quot;observed_status&quot;: &quot;up&quot;
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>Some job runs completed with a final failure during the reporting window.</h3><p class="finding-code">failed_job_runs</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_runs&quot;: 55,
+  &quot;failed_runs&quot;: 4,
+  &quot;failure_categories&quot;: {
+    &quot;dependency_unavailable&quot;: 4
+  }
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>Some expected monitoring slots have no known up/down observation.</h3><p class="finding-code">monitoring_coverage_gap</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;expected_slots&quot;: 672,
+  &quot;known_status_slots&quot;: 647,
+  &quot;missing_slots&quot;: 12,
+  &quot;monitoring_coverage_pct&quot;: 96.28,
+  &quot;unknown_slots&quot;: 13
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>Some pending job runs exceed the configured pending-age target.</h3><p class="finding-code">pending_jobs_old</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_target_hours&quot;: 4.0,
+  &quot;job_ids&quot;: [
+    &quot;job-photos-054&quot;
+  ],
+  &quot;oldest_pending_age_hours&quot;: 20.0,
+  &quot;stale_pending_runs&quot;: 1
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>The latest resource sample is too old for current resource alerts.</h3><p class="finding-code">resources_stale</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;age_hours&quot;: 12.0,
+  &quot;event_id&quot;: &quot;resource-photos-0660&quot;,
+  &quot;freshness_limit_seconds&quot;: 7200,
+  &quot;observed_at&quot;: &quot;2026-10-18T12:00:00+00:00&quot;
+}</pre></details></article><article class="finding amber"><div class="finding-meta"><span class="badge amber">warning</span><span class="mono">photos</span></div><h3>No successful restore test is recorded; backup success alone does not prove recovery.</h3><p class="finding-code">restore_success_missing</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;max_age_days&quot;: 30.0,
+  &quot;recorded_restore_tests&quot;: 1
+}</pre></details></article><article class="finding teal"><div class="finding-meta"><span class="badge teal">info</span><span class="mono">documents</span></div><h3>Recorded job attempts include retries; retries are separate from final failures.</h3><p class="finding-code">job_retries</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_runs&quot;: 55,
+  &quot;final_failed_runs&quot;: 4,
+  &quot;pending_runs&quot;: 1,
+  &quot;retries&quot;: 24
+}</pre></details></article><article class="finding teal"><div class="finding-meta"><span class="badge teal">info</span><span class="mono">photos</span></div><h3>Recorded job attempts include retries; retries are separate from final failures.</h3><p class="finding-code">job_retries</p><details><summary>Inspect evidence</summary><pre>{
+  &quot;completed_runs&quot;: 55,
+  &quot;final_failed_runs&quot;: 4,
+  &quot;pending_runs&quot;: 1,
+  &quot;retries&quot;: 24
+}</pre></details></article></div></details></section>
+<section class="section" id="services" aria-labelledby="services-title"><div class="section-heading"><div>
+<h2 id="services-title"><span class="section-index">02</span>Service visibility</h2><p>Read success and coverage together. A stale “up” observation does not establish current status.</p></div></div>
+<div class="table-wrap"><table><caption>Sampled success = up / known up-or-down slots. Known coverage = known / expected slots. Neither measures continuous uptime.</caption>
+<thead><tr><th scope="col">Service</th><th scope="col">Status at cutoff</th><th scope="col" class="numeric">Sampled success</th><th scope="col" class="numeric">Known coverage</th><th scope="col" class="numeric">Down slots</th><th scope="col" class="numeric">Missing</th><th scope="col" class="numeric">Unknown</th></tr></thead>
+<tbody><tr><th scope="row" class="mono">compute</th><td><span class="badge teal">up</span><small>1 h old at cutoff</small></td><td class="numeric">100%</td><td class="numeric">98.07%</td><td class="numeric">0</td><td class="numeric">0</td><td class="numeric">13</td></tr><tr><th scope="row" class="mono">documents</th><td><span class="badge red">down</span><small>1 h old at cutoff</small></td><td class="numeric">98.58%</td><td class="numeric">94.64%</td><td class="numeric">9</td><td class="numeric">24</td><td class="numeric">12</td></tr><tr><th scope="row" class="mono">photos</th><td><span class="badge neutral">Current status unknown</span><small>Last observed: up · 13 h old</small></td><td class="numeric">100%</td><td class="numeric">96.28%</td><td class="numeric">0</td><td class="numeric">12</td><td class="numeric">13</td></tr></tbody></table></div></section>
+<section class="section" aria-labelledby="resource-title"><div class="section-heading"><div>
+<h2 id="resource-title"><span class="section-index">03</span>Resource observations</h2><p>Latest available sample per service. Grey bars are historical values; missing values stay unknown.</p></div></div>
+<div class="cards"><article class="card"><div class="card-top"><h3 class="mono">compute</h3><span class="badge teal">Fresh at cutoff</span></div><div class="resource-metric "><div><span>CPU</span><strong>53.97%</strong></div><div class="track" aria-hidden="true"><span style="width:53.9700%"></span></div></div><div class="resource-metric "><div><span>Memory</span><strong>45%</strong></div><div class="track" aria-hidden="true"><span style="width:45.0000%"></span></div></div><div class="resource-metric "><div><span>Disk</span><strong>49%</strong></div><div class="track" aria-hidden="true"><span style="width:49.0000%"></span></div></div><dl class="mini-facts"><div><dt>Free inodes</dt><dd>55%</dd></div><div><dt>Storage pool</dt><dd>degraded</dd></div><div><dt>Disk health</dt><dd>passed</dd></div><div><dt>Sample age at cutoff</dt><dd>1 h</dd></div></dl><details><summary>Inspect resource sample</summary><pre>{
+  &quot;cpu_pct&quot;: 53.97,
+  &quot;disk_free_inodes_pct&quot;: 55.0,
+  &quot;disk_health&quot;: &quot;passed&quot;,
+  &quot;disk_total_bytes&quot;: 1000000000000,
+  &quot;disk_used_bytes&quot;: 490000000000,
+  &quot;disk_used_pct&quot;: 49.0,
+  &quot;freshness_limit_seconds&quot;: 7200,
+  &quot;is_fresh&quot;: true,
+  &quot;latest_age_hours&quot;: 1.0,
+  &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;measured_fields&quot;: [
+    &quot;cpu_pct&quot;,
+    &quot;memory_pct&quot;,
+    &quot;disk_used_bytes&quot;,
+    &quot;disk_total_bytes&quot;,
+    &quot;disk_free_inodes_pct&quot;,
+    &quot;pool_health&quot;,
+    &quot;disk_health&quot;
+  ],
+  &quot;memory_pct&quot;: 45.0,
+  &quot;missing_fields&quot;: [],
+  &quot;pool_health&quot;: &quot;degraded&quot;
+}</pre></details></article><article class="card"><div class="card-top"><h3 class="mono">documents</h3><span class="badge teal">Fresh at cutoff</span></div><div class="resource-metric "><div><span>CPU</span><strong>20.44%</strong></div><div class="track" aria-hidden="true"><span style="width:20.4400%"></span></div></div><div class="resource-metric "><div><span>Memory</span><strong>94%</strong></div><div class="track" aria-hidden="true"><span style="width:94.0000%"></span></div></div><div class="resource-metric "><div><span>Disk</span><strong>49%</strong></div><div class="track" aria-hidden="true"><span style="width:49.0000%"></span></div></div><dl class="mini-facts"><div><dt>Free inodes</dt><dd>4%</dd></div><div><dt>Storage pool</dt><dd>online</dd></div><div><dt>Disk health</dt><dd>passed</dd></div><div><dt>Sample age at cutoff</dt><dd>1 h</dd></div></dl><details><summary>Inspect resource sample</summary><pre>{
+  &quot;cpu_pct&quot;: 20.44,
+  &quot;disk_free_inodes_pct&quot;: 4.0,
+  &quot;disk_health&quot;: &quot;passed&quot;,
+  &quot;disk_total_bytes&quot;: 1000000000000,
+  &quot;disk_used_bytes&quot;: 490000000000,
+  &quot;disk_used_pct&quot;: 49.0,
+  &quot;freshness_limit_seconds&quot;: 7200,
+  &quot;is_fresh&quot;: true,
+  &quot;latest_age_hours&quot;: 1.0,
+  &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+  &quot;measured_fields&quot;: [
+    &quot;cpu_pct&quot;,
+    &quot;memory_pct&quot;,
+    &quot;disk_used_bytes&quot;,
+    &quot;disk_total_bytes&quot;,
+    &quot;disk_free_inodes_pct&quot;,
+    &quot;pool_health&quot;,
+    &quot;disk_health&quot;
+  ],
+  &quot;memory_pct&quot;: 94.0,
+  &quot;missing_fields&quot;: [],
+  &quot;pool_health&quot;: &quot;online&quot;
+}</pre></details></article><article class="card"><div class="card-top"><h3 class="mono">photos</h3><span class="badge amber">Stale · historical only</span></div><div class="resource-metric historical"><div><span>CPU</span><strong>20.55%</strong></div><div class="track" aria-hidden="true"><span style="width:20.5500%"></span></div></div><div class="resource-metric historical"><div><span>Memory</span><strong>45%</strong></div><div class="track" aria-hidden="true"><span style="width:45.0000%"></span></div></div><div class="resource-metric historical"><div><span>Disk</span><strong>95.41%</strong></div><div class="track" aria-hidden="true"><span style="width:95.4100%"></span></div></div><dl class="mini-facts"><div><dt>Free inodes</dt><dd>55%</dd></div><div><dt>Storage pool</dt><dd>online</dd></div><div><dt>Disk health</dt><dd>passed</dd></div><div><dt>Sample age at cutoff</dt><dd>12 h</dd></div></dl><details><summary>Inspect resource sample</summary><pre>{
+  &quot;cpu_pct&quot;: 20.55,
+  &quot;disk_free_inodes_pct&quot;: 55.0,
+  &quot;disk_health&quot;: &quot;passed&quot;,
+  &quot;disk_total_bytes&quot;: 1000000000000,
+  &quot;disk_used_bytes&quot;: 954098360655,
+  &quot;disk_used_pct&quot;: 95.41,
+  &quot;freshness_limit_seconds&quot;: 7200,
+  &quot;is_fresh&quot;: false,
+  &quot;latest_age_hours&quot;: 12.0,
+  &quot;latest_observed_at&quot;: &quot;2026-10-18T12:00:00+00:00&quot;,
+  &quot;measured_fields&quot;: [
+    &quot;cpu_pct&quot;,
+    &quot;memory_pct&quot;,
+    &quot;disk_used_bytes&quot;,
+    &quot;disk_total_bytes&quot;,
+    &quot;disk_free_inodes_pct&quot;,
+    &quot;pool_health&quot;,
+    &quot;disk_health&quot;
+  ],
+  &quot;memory_pct&quot;: 45.0,
+  &quot;missing_fields&quot;: [],
+  &quot;pool_health&quot;: &quot;online&quot;
+}</pre></details></article></div><p class="footnote">Single samples do not establish sustained pressure or a storage exhaustion forecast.</p></section>
+<section class="section" aria-labelledby="protection-title"><div class="section-heading"><div>
+<h2 id="protection-title"><span class="section-index">04</span>Data protection &amp; recovery</h2><p>Backup freshness and restore evidence are separate checks. Ages are measured at the report cutoff.</p></div></div>
+<div class="cards"><article class="card"><h3 class="mono">compute</h3><div class="protection-row"><div><span class="eyebrow">Last successful backup</span><strong class="age">22 h</strong></div><span class="badge teal">Within age target</span></div><p class="muted">Target: 48 h · latest attempt: success</p><div class="protection-row divided"><div><span class="eyebrow">Last passed restore</span><strong class="age">40 days</strong></div><span class="badge amber">Overdue</span></div><p class="muted">Target: 30 days · latest test: passed</p><details><summary>Inspect backup &amp; restore evidence</summary><pre>{
+  &quot;is_overdue&quot;: false,
+  &quot;last_passed_restore_age_days&quot;: 40.0,
+  &quot;last_passed_restore_at&quot;: &quot;2026-09-09T00:00:00+00:00&quot;,
+  &quot;last_success_age_hours&quot;: 22.0,
+  &quot;last_success_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+  &quot;last_success_checksum_verified&quot;: true,
+  &quot;latest_attempt_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+  &quot;latest_attempt_outcome&quot;: &quot;success&quot;,
+  &quot;latest_restore_at&quot;: &quot;2026-09-09T00:00:00+00:00&quot;,
+  &quot;latest_restore_outcome&quot;: &quot;passed&quot;,
+  &quot;max_age_hours&quot;: 48.0,
+  &quot;restore_is_overdue&quot;: true,
+  &quot;restore_max_age_days&quot;: 30.0
+}</pre></details></article><article class="card"><h3 class="mono">documents</h3><div class="protection-row"><div><span class="eyebrow">Last successful backup</span><strong class="age">46 h</strong></div><span class="badge teal">Within age target</span></div><p class="muted">Target: 48 h · latest attempt: failed</p><div class="protection-row divided"><div><span class="eyebrow">Last passed restore</span><strong class="age">10 days</strong></div><span class="badge teal">Within age target</span></div><p class="muted">Target: 30 days · latest test: passed</p><details><summary>Inspect backup &amp; restore evidence</summary><pre>{
+  &quot;is_overdue&quot;: false,
+  &quot;last_passed_restore_age_days&quot;: 10.0,
+  &quot;last_passed_restore_at&quot;: &quot;2026-10-09T00:00:00+00:00&quot;,
+  &quot;last_success_age_hours&quot;: 46.0,
+  &quot;last_success_at&quot;: &quot;2026-10-17T02:00:00+00:00&quot;,
+  &quot;last_success_checksum_verified&quot;: true,
+  &quot;latest_attempt_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+  &quot;latest_attempt_outcome&quot;: &quot;failed&quot;,
+  &quot;latest_restore_at&quot;: &quot;2026-10-09T00:00:00+00:00&quot;,
+  &quot;latest_restore_outcome&quot;: &quot;passed&quot;,
+  &quot;max_age_hours&quot;: 48.0,
+  &quot;restore_is_overdue&quot;: false,
+  &quot;restore_max_age_days&quot;: 30.0
+}</pre></details></article><article class="card"><h3 class="mono">photos</h3><div class="protection-row"><div><span class="eyebrow">Last successful backup</span><strong class="age">94 h</strong></div><span class="badge amber">Overdue</span></div><p class="muted">Target: 48 h · latest attempt: success</p><div class="protection-row divided"><div><span class="eyebrow">Last passed restore</span><strong class="age">Unknown</strong></div><span class="badge amber">No success recorded</span></div><p class="muted">Target: 30 days · latest test: failed</p><details><summary>Inspect backup &amp; restore evidence</summary><pre>{
+  &quot;is_overdue&quot;: true,
+  &quot;last_passed_restore_age_days&quot;: null,
+  &quot;last_passed_restore_at&quot;: null,
+  &quot;last_success_age_hours&quot;: 94.0,
+  &quot;last_success_at&quot;: &quot;2026-10-15T02:00:00+00:00&quot;,
+  &quot;last_success_checksum_verified&quot;: true,
+  &quot;latest_attempt_at&quot;: &quot;2026-10-15T02:00:00+00:00&quot;,
+  &quot;latest_attempt_outcome&quot;: &quot;success&quot;,
+  &quot;latest_restore_at&quot;: &quot;2026-10-17T00:00:00+00:00&quot;,
+  &quot;latest_restore_outcome&quot;: &quot;failed&quot;,
+  &quot;max_age_hours&quot;: 48.0,
+  &quot;restore_is_overdue&quot;: null,
+  &quot;restore_max_age_days&quot;: 30.0
+}</pre></details></article></div><p class="footnote">A successful backup, including checksum verification, does not prove recoverability. Restore records do not identify the backup generation tested.</p></section>
+<section class="section" aria-labelledby="jobs-title"><div class="section-heading"><div>
+<h2 id="jobs-title"><span class="section-index">05</span>Application work</h2><p>Final outcomes, retry overhead and pending work at the report cutoff.</p></div></div>
+<div class="table-wrap"><table><caption>Completed runs finish inside the reporting window. Pending runs can begin earlier. Retries count attempts minus one for included runs.</caption>
+<thead><tr><th scope="col">Service</th><th scope="col" class="numeric">Completed</th><th scope="col" class="numeric">Success</th><th scope="col" class="numeric">Failed</th><th scope="col" class="numeric">Retries</th><th scope="col" class="numeric">Running</th><th scope="col" class="numeric">Blocked</th><th scope="col" class="numeric">Over age target</th></tr></thead><tbody><tr><th scope="row" class="mono">compute</th><td class="numeric">0</td><td class="numeric">Unknown</td><td class="numeric">0</td><td class="numeric">0</td><td class="numeric">0</td><td class="numeric">0</td><td class="numeric">0</td></tr><tr><th scope="row" class="mono">documents</th><td class="numeric">55</td><td class="numeric">92.73%</td><td class="numeric">4</td><td class="numeric">24</td><td class="numeric">0</td><td class="numeric">1</td><td class="numeric">1</td></tr><tr><th scope="row" class="mono">photos</th><td class="numeric">55</td><td class="numeric">92.73%</td><td class="numeric">4</td><td class="numeric">24</td><td class="numeric">1</td><td class="numeric">0</td><td class="numeric">1</td></tr></tbody></table></div>
+<details class="more-findings"><summary>Inspect all service metrics</summary><pre>[
+  {
+    &quot;backups&quot;: {
+      &quot;is_overdue&quot;: false,
+      &quot;last_passed_restore_age_days&quot;: 40.0,
+      &quot;last_passed_restore_at&quot;: &quot;2026-09-09T00:00:00+00:00&quot;,
+      &quot;last_success_age_hours&quot;: 22.0,
+      &quot;last_success_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+      &quot;last_success_checksum_verified&quot;: true,
+      &quot;latest_attempt_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+      &quot;latest_attempt_outcome&quot;: &quot;success&quot;,
+      &quot;latest_restore_at&quot;: &quot;2026-09-09T00:00:00+00:00&quot;,
+      &quot;latest_restore_outcome&quot;: &quot;passed&quot;,
+      &quot;max_age_hours&quot;: 48.0,
+      &quot;restore_is_overdue&quot;: true,
+      &quot;restore_max_age_days&quot;: 30.0
+    },
+    &quot;checks&quot;: {
+      &quot;down_slots&quot;: 0,
+      &quot;expected_slots&quot;: 672,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: true,
+      &quot;known_status_slots&quot;: 659,
+      &quot;latest_age_hours&quot;: 1.0,
+      &quot;latest_latency_ms&quot;: 79.46,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+      &quot;latest_status&quot;: &quot;up&quot;,
+      &quot;missing_slots&quot;: 0,
+      &quot;monitoring_coverage_pct&quot;: 98.07,
+      &quot;observed_slots&quot;: 672,
+      &quot;raw_observations&quot;: 672,
+      &quot;sampled_success_pct&quot;: 100.0,
+      &quot;unknown_slots&quot;: 13,
+      &quot;up_slots&quot;: 659
+    },
+    &quot;jobs&quot;: {
+      &quot;blocked_runs&quot;: 0,
+      &quot;completed_run_retries&quot;: 0,
+      &quot;completed_runs&quot;: 0,
+      &quot;failed_runs&quot;: 0,
+      &quot;failure_categories&quot;: {},
+      &quot;oldest_pending_age_hours&quot;: null,
+      &quot;oldest_pending_job_id&quot;: null,
+      &quot;pending_age_target_hours&quot;: 4.0,
+      &quot;pending_run_retries&quot;: 0,
+      &quot;retries&quot;: 0,
+      &quot;running_runs&quot;: 0,
+      &quot;slowest_completed_duration_seconds&quot;: null,
+      &quot;slowest_completed_job_id&quot;: null,
+      &quot;stale_pending_runs&quot;: 0,
+      &quot;succeeded_runs&quot;: 0,
+      &quot;success_pct&quot;: null
+    },
+    &quot;resources&quot;: {
+      &quot;cpu_pct&quot;: 53.97,
+      &quot;disk_free_inodes_pct&quot;: 55.0,
+      &quot;disk_health&quot;: &quot;passed&quot;,
+      &quot;disk_total_bytes&quot;: 1000000000000,
+      &quot;disk_used_bytes&quot;: 490000000000,
+      &quot;disk_used_pct&quot;: 49.0,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: true,
+      &quot;latest_age_hours&quot;: 1.0,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+      &quot;measured_fields&quot;: [
+        &quot;cpu_pct&quot;,
+        &quot;memory_pct&quot;,
+        &quot;disk_used_bytes&quot;,
+        &quot;disk_total_bytes&quot;,
+        &quot;disk_free_inodes_pct&quot;,
+        &quot;pool_health&quot;,
+        &quot;disk_health&quot;
+      ],
+      &quot;memory_pct&quot;: 45.0,
+      &quot;missing_fields&quot;: [],
+      &quot;pool_health&quot;: &quot;degraded&quot;
+    },
+    &quot;service_id&quot;: &quot;compute&quot;
+  },
+  {
+    &quot;backups&quot;: {
+      &quot;is_overdue&quot;: false,
+      &quot;last_passed_restore_age_days&quot;: 10.0,
+      &quot;last_passed_restore_at&quot;: &quot;2026-10-09T00:00:00+00:00&quot;,
+      &quot;last_success_age_hours&quot;: 46.0,
+      &quot;last_success_at&quot;: &quot;2026-10-17T02:00:00+00:00&quot;,
+      &quot;last_success_checksum_verified&quot;: true,
+      &quot;latest_attempt_at&quot;: &quot;2026-10-18T02:00:00+00:00&quot;,
+      &quot;latest_attempt_outcome&quot;: &quot;failed&quot;,
+      &quot;latest_restore_at&quot;: &quot;2026-10-09T00:00:00+00:00&quot;,
+      &quot;latest_restore_outcome&quot;: &quot;passed&quot;,
+      &quot;max_age_hours&quot;: 48.0,
+      &quot;restore_is_overdue&quot;: false,
+      &quot;restore_max_age_days&quot;: 30.0
+    },
+    &quot;checks&quot;: {
+      &quot;down_slots&quot;: 9,
+      &quot;expected_slots&quot;: 672,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: true,
+      &quot;known_status_slots&quot;: 636,
+      &quot;latest_age_hours&quot;: 1.0,
+      &quot;latest_latency_ms&quot;: null,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+      &quot;latest_status&quot;: &quot;down&quot;,
+      &quot;missing_slots&quot;: 24,
+      &quot;monitoring_coverage_pct&quot;: 94.64,
+      &quot;observed_slots&quot;: 648,
+      &quot;raw_observations&quot;: 648,
+      &quot;sampled_success_pct&quot;: 98.58,
+      &quot;unknown_slots&quot;: 12,
+      &quot;up_slots&quot;: 627
+    },
+    &quot;jobs&quot;: {
+      &quot;blocked_runs&quot;: 1,
+      &quot;completed_run_retries&quot;: 24,
+      &quot;completed_runs&quot;: 55,
+      &quot;failed_runs&quot;: 4,
+      &quot;failure_categories&quot;: {
+        &quot;dependency_unavailable&quot;: 4
+      },
+      &quot;oldest_pending_age_hours&quot;: 20.0,
+      &quot;oldest_pending_job_id&quot;: &quot;job-documents-054&quot;,
+      &quot;pending_age_target_hours&quot;: 4.0,
+      &quot;pending_run_retries&quot;: 0,
+      &quot;retries&quot;: 24,
+      &quot;running_runs&quot;: 0,
+      &quot;slowest_completed_duration_seconds&quot;: 4740.0,
+      &quot;slowest_completed_job_id&quot;: &quot;job-documents-034&quot;,
+      &quot;stale_pending_runs&quot;: 1,
+      &quot;succeeded_runs&quot;: 51,
+      &quot;success_pct&quot;: 92.73
+    },
+    &quot;resources&quot;: {
+      &quot;cpu_pct&quot;: 20.44,
+      &quot;disk_free_inodes_pct&quot;: 4.0,
+      &quot;disk_health&quot;: &quot;passed&quot;,
+      &quot;disk_total_bytes&quot;: 1000000000000,
+      &quot;disk_used_bytes&quot;: 490000000000,
+      &quot;disk_used_pct&quot;: 49.0,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: true,
+      &quot;latest_age_hours&quot;: 1.0,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T23:00:00+00:00&quot;,
+      &quot;measured_fields&quot;: [
+        &quot;cpu_pct&quot;,
+        &quot;memory_pct&quot;,
+        &quot;disk_used_bytes&quot;,
+        &quot;disk_total_bytes&quot;,
+        &quot;disk_free_inodes_pct&quot;,
+        &quot;pool_health&quot;,
+        &quot;disk_health&quot;
+      ],
+      &quot;memory_pct&quot;: 94.0,
+      &quot;missing_fields&quot;: [],
+      &quot;pool_health&quot;: &quot;online&quot;
+    },
+    &quot;service_id&quot;: &quot;documents&quot;
+  },
+  {
+    &quot;backups&quot;: {
+      &quot;is_overdue&quot;: true,
+      &quot;last_passed_restore_age_days&quot;: null,
+      &quot;last_passed_restore_at&quot;: null,
+      &quot;last_success_age_hours&quot;: 94.0,
+      &quot;last_success_at&quot;: &quot;2026-10-15T02:00:00+00:00&quot;,
+      &quot;last_success_checksum_verified&quot;: true,
+      &quot;latest_attempt_at&quot;: &quot;2026-10-15T02:00:00+00:00&quot;,
+      &quot;latest_attempt_outcome&quot;: &quot;success&quot;,
+      &quot;latest_restore_at&quot;: &quot;2026-10-17T00:00:00+00:00&quot;,
+      &quot;latest_restore_outcome&quot;: &quot;failed&quot;,
+      &quot;max_age_hours&quot;: 48.0,
+      &quot;restore_is_overdue&quot;: null,
+      &quot;restore_max_age_days&quot;: 30.0
+    },
+    &quot;checks&quot;: {
+      &quot;down_slots&quot;: 0,
+      &quot;expected_slots&quot;: 672,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: false,
+      &quot;known_status_slots&quot;: 647,
+      &quot;latest_age_hours&quot;: 13.0,
+      &quot;latest_latency_ms&quot;: 82.89,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T11:00:00+00:00&quot;,
+      &quot;latest_status&quot;: &quot;up&quot;,
+      &quot;missing_slots&quot;: 12,
+      &quot;monitoring_coverage_pct&quot;: 96.28,
+      &quot;observed_slots&quot;: 660,
+      &quot;raw_observations&quot;: 660,
+      &quot;sampled_success_pct&quot;: 100.0,
+      &quot;unknown_slots&quot;: 13,
+      &quot;up_slots&quot;: 647
+    },
+    &quot;jobs&quot;: {
+      &quot;blocked_runs&quot;: 0,
+      &quot;completed_run_retries&quot;: 24,
+      &quot;completed_runs&quot;: 55,
+      &quot;failed_runs&quot;: 4,
+      &quot;failure_categories&quot;: {
+        &quot;dependency_unavailable&quot;: 4
+      },
+      &quot;oldest_pending_age_hours&quot;: 20.0,
+      &quot;oldest_pending_job_id&quot;: &quot;job-photos-054&quot;,
+      &quot;pending_age_target_hours&quot;: 4.0,
+      &quot;pending_run_retries&quot;: 0,
+      &quot;retries&quot;: 24,
+      &quot;running_runs&quot;: 1,
+      &quot;slowest_completed_duration_seconds&quot;: 4800.0,
+      &quot;slowest_completed_job_id&quot;: &quot;job-photos-037&quot;,
+      &quot;stale_pending_runs&quot;: 1,
+      &quot;succeeded_runs&quot;: 51,
+      &quot;success_pct&quot;: 92.73
+    },
+    &quot;resources&quot;: {
+      &quot;cpu_pct&quot;: 20.55,
+      &quot;disk_free_inodes_pct&quot;: 55.0,
+      &quot;disk_health&quot;: &quot;passed&quot;,
+      &quot;disk_total_bytes&quot;: 1000000000000,
+      &quot;disk_used_bytes&quot;: 954098360655,
+      &quot;disk_used_pct&quot;: 95.41,
+      &quot;freshness_limit_seconds&quot;: 7200,
+      &quot;is_fresh&quot;: false,
+      &quot;latest_age_hours&quot;: 12.0,
+      &quot;latest_observed_at&quot;: &quot;2026-10-18T12:00:00+00:00&quot;,
+      &quot;measured_fields&quot;: [
+        &quot;cpu_pct&quot;,
+        &quot;memory_pct&quot;,
+        &quot;disk_used_bytes&quot;,
+        &quot;disk_total_bytes&quot;,
+        &quot;disk_free_inodes_pct&quot;,
+        &quot;pool_health&quot;,
+        &quot;disk_health&quot;
+      ],
+      &quot;memory_pct&quot;: 45.0,
+      &quot;missing_fields&quot;: [],
+      &quot;pool_health&quot;: &quot;online&quot;
+    },
+    &quot;service_id&quot;: &quot;photos&quot;
+  }
+]</pre></details></section>
+<section class="section evidence-panel" id="evidence" aria-labelledby="evidence-title"><div class="section-heading"><div>
+<h2 id="evidence-title"><span class="section-index">06</span>Evidence &amp; interpretation</h2><p>Deterministic calculations. No model-generated explanation is included in this report.</p></div></div>
+<dl class="provenance"><dt>Execution</dt><dd class="mono">local_only</dd><dt>Generator version</dt><dd class="mono">1</dd><dt>Seed</dt><dd class="mono">42</dd><dt>Duplicate events removed</dt><dd class="mono">0</dd><dt>Dataset SHA-256</dt><dd class="mono">23f6b84366462fc39a859150127a397d874ce749ade44afca5e293d37db8d68c</dd></dl>
+<details><summary>Read metric definitions and limitations (8)</summary><ul><li>All input is synthetic; these findings do not describe an actual server.</li><li>The reporting window is [window_start, as_of), in UTC; as_of is exclusive.</li><li>Monitoring cadence slots start at window_start; a partial final slot is expected. Only the latest check per slot counts. Known coverage excludes missing and unknown slots. Sampled success uses only known up/down slots and is not continuous uptime.</li><li>Freshness uses at most twice the configured check cadence for checks and resources. Latest observations use available history before as_of. Stale resource values remain visible as historical evidence and do not produce current threshold alerts.</li><li>Resource warnings use demonstration thresholds: CPU, memory and disk used at 85%/95%; free inodes at 10%/5%. Single samples do not establish sustained load. No storage exhaustion forecast or cause is inferred.</li><li>Backup and restore history may predate window_start. A successful or checksum verified backup does not prove a restore will succeed. Restore records do not identify which backup was tested; no latest-backup restore claim is made.</li><li>Completed job runs count by finished_at within the window. Pending runs include carry-in runs and are observed at as_of. Retries are attempts minus one for those included runs, not individual retry events timed within the window. Pending age measures elapsed time since start, not time since last progress.</li><li>Missing measurements and empty outcome denominators remain null; no observation is not evidence of health. Configured targets are demonstration assumptions.</li></ul></details>
+</section>
+<footer><span>Server &amp; App Operations Insights · Matej Bicej</span><span>Synthetic data · Local report · Schema 1</span></footer>
+</main></body></html>

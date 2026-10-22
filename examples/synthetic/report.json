@@ -1,0 +1,526 @@
+{
+  "as_of": "2026-10-19T00:00:00+00:00",
+  "data_classification": "synthetic",
+  "duplicates_removed": 0,
+  "findings": [
+    {
+      "code": "pool_degraded",
+      "evidence": {
+        "age_hours": 1.0,
+        "event_id": "resource-compute-0671",
+        "observed_at": "2026-10-18T23:00:00+00:00",
+        "pool_health": "degraded"
+      },
+      "service_id": "compute",
+      "severity": "critical",
+      "summary": "The latest storage pool observation reports degraded."
+    },
+    {
+      "code": "free_inodes_low",
+      "evidence": {
+        "age_hours": 1.0,
+        "critical_threshold_pct": 5,
+        "event_id": "resource-documents-0671",
+        "free_inodes_pct": 4.0,
+        "observed_at": "2026-10-18T23:00:00+00:00",
+        "warning_threshold_pct": 10
+      },
+      "service_id": "documents",
+      "severity": "critical",
+      "summary": "Free inodes are low in the latest sample."
+    },
+    {
+      "code": "latest_check_down",
+      "evidence": {
+        "age_hours": 1.0,
+        "event_id": "check-documents-0671",
+        "observed_at": "2026-10-18T23:00:00+00:00",
+        "observed_status": "down"
+      },
+      "service_id": "documents",
+      "severity": "critical",
+      "summary": "The latest fresh service check reports down."
+    },
+    {
+      "code": "latest_restore_failed",
+      "evidence": {
+        "completed_at": "2026-10-17T00:00:00+00:00",
+        "event_id": "restore-photos",
+        "last_passed_restore_at": null
+      },
+      "service_id": "photos",
+      "severity": "critical",
+      "summary": "The latest recorded restore test failed."
+    },
+    {
+      "code": "monitoring_coverage_gap",
+      "evidence": {
+        "expected_slots": 672,
+        "known_status_slots": 659,
+        "missing_slots": 0,
+        "monitoring_coverage_pct": 98.07,
+        "unknown_slots": 13
+      },
+      "service_id": "compute",
+      "severity": "warning",
+      "summary": "Some expected monitoring slots have no known up/down observation."
+    },
+    {
+      "code": "restore_test_overdue",
+      "evidence": {
+        "age_days": 40.0,
+        "completed_at": "2026-09-09T00:00:00+00:00",
+        "event_id": "restore-compute",
+        "max_age_days": 30.0
+      },
+      "service_id": "compute",
+      "severity": "warning",
+      "summary": "The most recent successful restore test exceeds its configured age target."
+    },
+    {
+      "code": "blocked_job_runs",
+      "evidence": {
+        "blocked_runs": 1
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "Some job runs are blocked at the report cutoff."
+    },
+    {
+      "code": "failed_job_runs",
+      "evidence": {
+        "completed_runs": 55,
+        "failed_runs": 4,
+        "failure_categories": {
+          "dependency_unavailable": 4
+        }
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "Some job runs completed with a final failure during the reporting window."
+    },
+    {
+      "code": "latest_backup_failed",
+      "evidence": {
+        "completed_at": "2026-10-18T02:00:00+00:00",
+        "event_id": "backup-documents-27",
+        "last_success_at": "2026-10-17T02:00:00+00:00"
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "The latest recorded backup attempt failed."
+    },
+    {
+      "code": "memory_high",
+      "evidence": {
+        "age_hours": 1.0,
+        "critical_threshold_pct": 95,
+        "event_id": "resource-documents-0671",
+        "metric": "memory_pct",
+        "observed_at": "2026-10-18T23:00:00+00:00",
+        "value_pct": 94.0,
+        "warning_threshold_pct": 85
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "Memory utilization exceeds the demonstration threshold in the latest sample."
+    },
+    {
+      "code": "monitoring_coverage_gap",
+      "evidence": {
+        "expected_slots": 672,
+        "known_status_slots": 636,
+        "missing_slots": 24,
+        "monitoring_coverage_pct": 94.64,
+        "unknown_slots": 12
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "Some expected monitoring slots have no known up/down observation."
+    },
+    {
+      "code": "pending_jobs_old",
+      "evidence": {
+        "age_target_hours": 4.0,
+        "job_ids": [
+          "job-documents-054"
+        ],
+        "oldest_pending_age_hours": 20.0,
+        "stale_pending_runs": 1
+      },
+      "service_id": "documents",
+      "severity": "warning",
+      "summary": "Some pending job runs exceed the configured pending-age target."
+    },
+    {
+      "code": "backup_overdue",
+      "evidence": {
+        "age_hours": 94.0,
+        "event_id": "backup-photos-24",
+        "last_success_at": "2026-10-15T02:00:00+00:00",
+        "max_age_hours": 48.0
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "The most recent successful backup exceeds its configured age target."
+    },
+    {
+      "code": "checks_stale",
+      "evidence": {
+        "age_hours": 13.0,
+        "event_id": "check-photos-0659",
+        "freshness_limit_seconds": 7200,
+        "observed_at": "2026-10-18T11:00:00+00:00",
+        "observed_status": "up"
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "The latest service check is too old to describe current status."
+    },
+    {
+      "code": "failed_job_runs",
+      "evidence": {
+        "completed_runs": 55,
+        "failed_runs": 4,
+        "failure_categories": {
+          "dependency_unavailable": 4
+        }
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "Some job runs completed with a final failure during the reporting window."
+    },
+    {
+      "code": "monitoring_coverage_gap",
+      "evidence": {
+        "expected_slots": 672,
+        "known_status_slots": 647,
+        "missing_slots": 12,
+        "monitoring_coverage_pct": 96.28,
+        "unknown_slots": 13
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "Some expected monitoring slots have no known up/down observation."
+    },
+    {
+      "code": "pending_jobs_old",
+      "evidence": {
+        "age_target_hours": 4.0,
+        "job_ids": [
+          "job-photos-054"
+        ],
+        "oldest_pending_age_hours": 20.0,
+        "stale_pending_runs": 1
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "Some pending job runs exceed the configured pending-age target."
+    },
+    {
+      "code": "resources_stale",
+      "evidence": {
+        "age_hours": 12.0,
+        "event_id": "resource-photos-0660",
+        "freshness_limit_seconds": 7200,
+        "observed_at": "2026-10-18T12:00:00+00:00"
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "The latest resource sample is too old for current resource alerts."
+    },
+    {
+      "code": "restore_success_missing",
+      "evidence": {
+        "max_age_days": 30.0,
+        "recorded_restore_tests": 1
+      },
+      "service_id": "photos",
+      "severity": "warning",
+      "summary": "No successful restore test is recorded; backup success alone does not prove recovery."
+    },
+    {
+      "code": "job_retries",
+      "evidence": {
+        "completed_runs": 55,
+        "final_failed_runs": 4,
+        "pending_runs": 1,
+        "retries": 24
+      },
+      "service_id": "documents",
+      "severity": "info",
+      "summary": "Recorded job attempts include retries; retries are separate from final failures."
+    },
+    {
+      "code": "job_retries",
+      "evidence": {
+        "completed_runs": 55,
+        "final_failed_runs": 4,
+        "pending_runs": 1,
+        "retries": 24
+      },
+      "service_id": "photos",
+      "severity": "info",
+      "summary": "Recorded job attempts include retries; retries are separate from final failures."
+    }
+  ],
+  "limitations": [
+    "All input is synthetic; these findings do not describe an actual server.",
+    "The reporting window is [window_start, as_of), in UTC; as_of is exclusive.",
+    "Monitoring cadence slots start at window_start; a partial final slot is expected. Only the latest check per slot counts. Known coverage excludes missing and unknown slots. Sampled success uses only known up/down slots and is not continuous uptime.",
+    "Freshness uses at most twice the configured check cadence for checks and resources. Latest observations use available history before as_of. Stale resource values remain visible as historical evidence and do not produce current threshold alerts.",
+    "Resource warnings use demonstration thresholds: CPU, memory and disk used at 85%/95%; free inodes at 10%/5%. Single samples do not establish sustained load. No storage exhaustion forecast or cause is inferred.",
+    "Backup and restore history may predate window_start. A successful or checksum verified backup does not prove a restore will succeed. Restore records do not identify which backup was tested; no latest-backup restore claim is made.",
+    "Completed job runs count by finished_at within the window. Pending runs include carry-in runs and are observed at as_of. Retries are attempts minus one for those included runs, not individual retry events timed within the window. Pending age measures elapsed time since start, not time since last progress.",
+    "Missing measurements and empty outcome denominators remain null; no observation is not evidence of health. Configured targets are demonstration assumptions."
+  ],
+  "provenance": {
+    "dataset_sha256": "23f6b84366462fc39a859150127a397d874ce749ade44afca5e293d37db8d68c",
+    "duplicate_events_removed": 0,
+    "execution": "local_only",
+    "generator_version": "1",
+    "seed": 42
+  },
+  "schema_version": 1,
+  "services": [
+    {
+      "backups": {
+        "is_overdue": false,
+        "last_passed_restore_age_days": 40.0,
+        "last_passed_restore_at": "2026-09-09T00:00:00+00:00",
+        "last_success_age_hours": 22.0,
+        "last_success_at": "2026-10-18T02:00:00+00:00",
+        "last_success_checksum_verified": true,
+        "latest_attempt_at": "2026-10-18T02:00:00+00:00",
+        "latest_attempt_outcome": "success",
+        "latest_restore_at": "2026-09-09T00:00:00+00:00",
+        "latest_restore_outcome": "passed",
+        "max_age_hours": 48.0,
+        "restore_is_overdue": true,
+        "restore_max_age_days": 30.0
+      },
+      "checks": {
+        "down_slots": 0,
+        "expected_slots": 672,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": true,
+        "known_status_slots": 659,
+        "latest_age_hours": 1.0,
+        "latest_latency_ms": 79.46,
+        "latest_observed_at": "2026-10-18T23:00:00+00:00",
+        "latest_status": "up",
+        "missing_slots": 0,
+        "monitoring_coverage_pct": 98.07,
+        "observed_slots": 672,
+        "raw_observations": 672,
+        "sampled_success_pct": 100.0,
+        "unknown_slots": 13,
+        "up_slots": 659
+      },
+      "jobs": {
+        "blocked_runs": 0,
+        "completed_run_retries": 0,
+        "completed_runs": 0,
+        "failed_runs": 0,
+        "failure_categories": {},
+        "oldest_pending_age_hours": null,
+        "oldest_pending_job_id": null,
+        "pending_age_target_hours": 4.0,
+        "pending_run_retries": 0,
+        "retries": 0,
+        "running_runs": 0,
+        "slowest_completed_duration_seconds": null,
+        "slowest_completed_job_id": null,
+        "stale_pending_runs": 0,
+        "succeeded_runs": 0,
+        "success_pct": null
+      },
+      "resources": {
+        "cpu_pct": 53.97,
+        "disk_free_inodes_pct": 55.0,
+        "disk_health": "passed",
+        "disk_total_bytes": 1000000000000,
+        "disk_used_bytes": 490000000000,
+        "disk_used_pct": 49.0,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": true,
+        "latest_age_hours": 1.0,
+        "latest_observed_at": "2026-10-18T23:00:00+00:00",
+        "measured_fields": [
+          "cpu_pct",
+          "memory_pct",
+          "disk_used_bytes",
+          "disk_total_bytes",
+          "disk_free_inodes_pct",
+          "pool_health",
+          "disk_health"
+        ],
+        "memory_pct": 45.0,
+        "missing_fields": [],
+        "pool_health": "degraded"
+      },
+      "service_id": "compute"
+    },
+    {
+      "backups": {
+        "is_overdue": false,
+        "last_passed_restore_age_days": 10.0,
+        "last_passed_restore_at": "2026-10-09T00:00:00+00:00",
+        "last_success_age_hours": 46.0,
+        "last_success_at": "2026-10-17T02:00:00+00:00",
+        "last_success_checksum_verified": true,
+        "latest_attempt_at": "2026-10-18T02:00:00+00:00",
+        "latest_attempt_outcome": "failed",
+        "latest_restore_at": "2026-10-09T00:00:00+00:00",
+        "latest_restore_outcome": "passed",
+        "max_age_hours": 48.0,
+        "restore_is_overdue": false,
+        "restore_max_age_days": 30.0
+      },
+      "checks": {
+        "down_slots": 9,
+        "expected_slots": 672,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": true,
+        "known_status_slots": 636,
+        "latest_age_hours": 1.0,
+        "latest_latency_ms": null,
+        "latest_observed_at": "2026-10-18T23:00:00+00:00",
+        "latest_status": "down",
+        "missing_slots": 24,
+        "monitoring_coverage_pct": 94.64,
+        "observed_slots": 648,
+        "raw_observations": 648,
+        "sampled_success_pct": 98.58,
+        "unknown_slots": 12,
+        "up_slots": 627
+      },
+      "jobs": {
+        "blocked_runs": 1,
+        "completed_run_retries": 24,
+        "completed_runs": 55,
+        "failed_runs": 4,
+        "failure_categories": {
+          "dependency_unavailable": 4
+        },
+        "oldest_pending_age_hours": 20.0,
+        "oldest_pending_job_id": "job-documents-054",
+        "pending_age_target_hours": 4.0,
+        "pending_run_retries": 0,
+        "retries": 24,
+        "running_runs": 0,
+        "slowest_completed_duration_seconds": 4740.0,
+        "slowest_completed_job_id": "job-documents-034",
+        "stale_pending_runs": 1,
+        "succeeded_runs": 51,
+        "success_pct": 92.73
+      },
+      "resources": {
+        "cpu_pct": 20.44,
+        "disk_free_inodes_pct": 4.0,
+        "disk_health": "passed",
+        "disk_total_bytes": 1000000000000,
+        "disk_used_bytes": 490000000000,
+        "disk_used_pct": 49.0,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": true,
+        "latest_age_hours": 1.0,
+        "latest_observed_at": "2026-10-18T23:00:00+00:00",
+        "measured_fields": [
+          "cpu_pct",
+          "memory_pct",
+          "disk_used_bytes",
+          "disk_total_bytes",
+          "disk_free_inodes_pct",
+          "pool_health",
+          "disk_health"
+        ],
+        "memory_pct": 94.0,
+        "missing_fields": [],
+        "pool_health": "online"
+      },
+      "service_id": "documents"
+    },
+    {
+      "backups": {
+        "is_overdue": true,
+        "last_passed_restore_age_days": null,
+        "last_passed_restore_at": null,
+        "last_success_age_hours": 94.0,
+        "last_success_at": "2026-10-15T02:00:00+00:00",
+        "last_success_checksum_verified": true,
+        "latest_attempt_at": "2026-10-15T02:00:00+00:00",
+        "latest_attempt_outcome": "success",
+        "latest_restore_at": "2026-10-17T00:00:00+00:00",
+        "latest_restore_outcome": "failed",
+        "max_age_hours": 48.0,
+        "restore_is_overdue": null,
+        "restore_max_age_days": 30.0
+      },
+      "checks": {
+        "down_slots": 0,
+        "expected_slots": 672,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": false,
+        "known_status_slots": 647,
+        "latest_age_hours": 13.0,
+        "latest_latency_ms": 82.89,
+        "latest_observed_at": "2026-10-18T11:00:00+00:00",
+        "latest_status": "up",
+        "missing_slots": 12,
+        "monitoring_coverage_pct": 96.28,
+        "observed_slots": 660,
+        "raw_observations": 660,
+        "sampled_success_pct": 100.0,
+        "unknown_slots": 13,
+        "up_slots": 647
+      },
+      "jobs": {
+        "blocked_runs": 0,
+        "completed_run_retries": 24,
+        "completed_runs": 55,
+        "failed_runs": 4,
+        "failure_categories": {
+          "dependency_unavailable": 4
+        },
+        "oldest_pending_age_hours": 20.0,
+        "oldest_pending_job_id": "job-photos-054",
+        "pending_age_target_hours": 4.0,
+        "pending_run_retries": 0,
+        "retries": 24,
+        "running_runs": 1,
+        "slowest_completed_duration_seconds": 4800.0,
+        "slowest_completed_job_id": "job-photos-037",
+        "stale_pending_runs": 1,
+        "succeeded_runs": 51,
+        "success_pct": 92.73
+      },
+      "resources": {
+        "cpu_pct": 20.55,
+        "disk_free_inodes_pct": 55.0,
+        "disk_health": "passed",
+        "disk_total_bytes": 1000000000000,
+        "disk_used_bytes": 954098360655,
+        "disk_used_pct": 95.41,
+        "freshness_limit_seconds": 7200,
+        "is_fresh": false,
+        "latest_age_hours": 12.0,
+        "latest_observed_at": "2026-10-18T12:00:00+00:00",
+        "measured_fields": [
+          "cpu_pct",
+          "memory_pct",
+          "disk_used_bytes",
+          "disk_total_bytes",
+          "disk_free_inodes_pct",
+          "pool_health",
+          "disk_health"
+        ],
+        "memory_pct": 45.0,
+        "missing_fields": [],
+        "pool_health": "online"
+      },
+      "service_id": "photos"
+    }
+  ],
+  "window_start": "2026-09-21T00:00:00+00:00"
+}

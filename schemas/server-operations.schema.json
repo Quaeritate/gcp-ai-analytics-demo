@@ -1,0 +1,506 @@
+{
+  "$defs": {
+    "BackupRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "completed_at": {
+          "format": "date-time",
+          "title": "Completed At",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "success",
+            "failed"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        },
+        "verification": {
+          "default": "none",
+          "enum": [
+            "none",
+            "checksum"
+          ],
+          "title": "Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "service_id",
+        "completed_at",
+        "outcome"
+      ],
+      "title": "BackupRecord",
+      "type": "object"
+    },
+    "JobRun": {
+      "additionalProperties": false,
+      "properties": {
+        "attempts": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Attempts",
+          "type": "integer"
+        },
+        "error_category": {
+          "anyOf": [
+            {
+              "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Category"
+        },
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "finished_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Finished At"
+        },
+        "job_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "job_type": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Job Type",
+          "type": "string"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        },
+        "started_at": {
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "succeeded",
+            "failed",
+            "running",
+            "blocked"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "service_id",
+        "job_id",
+        "job_type",
+        "started_at",
+        "status"
+      ],
+      "title": "JobRun",
+      "type": "object"
+    },
+    "ResourceSample": {
+      "additionalProperties": false,
+      "properties": {
+        "cpu_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cpu Pct"
+        },
+        "disk_free_inodes_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disk Free Inodes Pct"
+        },
+        "disk_health": {
+          "anyOf": [
+            {
+              "enum": [
+                "passed",
+                "failed",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disk Health"
+        },
+        "disk_total_bytes": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disk Total Bytes"
+        },
+        "disk_used_bytes": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disk Used Bytes"
+        },
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "memory_pct": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Memory Pct"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "pool_health": {
+          "anyOf": [
+            {
+              "enum": [
+                "online",
+                "degraded",
+                "faulted",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pool Health"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "service_id",
+        "observed_at"
+      ],
+      "title": "ResourceSample",
+      "type": "object"
+    },
+    "RestoreTest": {
+      "additionalProperties": false,
+      "properties": {
+        "completed_at": {
+          "format": "date-time",
+          "title": "Completed At",
+          "type": "string"
+        },
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "outcome": {
+          "enum": [
+            "passed",
+            "failed"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "service_id",
+        "completed_at",
+        "outcome"
+      ],
+      "title": "RestoreTest",
+      "type": "object"
+    },
+    "ServiceCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "observed_at": {
+          "format": "date-time",
+          "title": "Observed At",
+          "type": "string"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "up",
+            "down",
+            "unknown"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "service_id",
+        "observed_at",
+        "status"
+      ],
+      "title": "ServiceCheck",
+      "type": "object"
+    },
+    "ServiceSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "backup_max_age_hours": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 48,
+          "title": "Backup Max Age Hours"
+        },
+        "check_interval_seconds": {
+          "default": 3600,
+          "minimum": 60,
+          "title": "Check Interval Seconds",
+          "type": "integer"
+        },
+        "job_stale_after_hours": {
+          "default": 4,
+          "exclusiveMinimum": 0,
+          "title": "Job Stale After Hours",
+          "type": "number"
+        },
+        "restore_max_age_days": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 30,
+          "title": "Restore Max Age Days"
+        },
+        "service_id": {
+          "pattern": "^[a-z][a-z0-9_-]{0,95}$",
+          "title": "Service Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "service_id"
+      ],
+      "title": "ServiceSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "backups": {
+      "items": {
+        "$ref": "#/$defs/BackupRecord"
+      },
+      "maxItems": 100000,
+      "title": "Backups",
+      "type": "array"
+    },
+    "data_classification": {
+      "const": "synthetic",
+      "title": "Data Classification",
+      "type": "string"
+    },
+    "generator_version": {
+      "anyOf": [
+        {
+          "const": "1",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Generator Version"
+    },
+    "job_runs": {
+      "items": {
+        "$ref": "#/$defs/JobRun"
+      },
+      "maxItems": 100000,
+      "title": "Job Runs",
+      "type": "array"
+    },
+    "resource_samples": {
+      "items": {
+        "$ref": "#/$defs/ResourceSample"
+      },
+      "maxItems": 100000,
+      "title": "Resource Samples",
+      "type": "array"
+    },
+    "restore_tests": {
+      "items": {
+        "$ref": "#/$defs/RestoreTest"
+      },
+      "maxItems": 100000,
+      "title": "Restore Tests",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": 1,
+      "default": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "seed": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Seed"
+    },
+    "service_checks": {
+      "items": {
+        "$ref": "#/$defs/ServiceCheck"
+      },
+      "maxItems": 100000,
+      "title": "Service Checks",
+      "type": "array"
+    },
+    "services": {
+      "items": {
+        "$ref": "#/$defs/ServiceSpec"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Services",
+      "type": "array"
+    },
+    "window_start": {
+      "format": "date-time",
+      "title": "Window Start",
+      "type": "string"
+    }
+  },
+  "required": [
+    "data_classification",
+    "window_start",
+    "as_of",
+    "services"
+  ],
+  "title": "Dataset",
+  "type": "object"
+}
