@@ -113,7 +113,7 @@ required, including prompt-injection evaluation.
 1. Read the private plan and ledger; verify the exact project, dataset and five
    table names. Reconcile any unfinished/uncertain jobs first.
 2. Retain only sanitized evidence needed for the demonstration.
-3. In the BigQuery console, remove only the five demonstration tables after
+3. Using the BigQuery console or SDK, remove only the five demonstration tables after
    owner approval. Inspect the dataset before deleting it; do not recursively
    remove a dataset that contains unrelated tables.
 4. Confirm a fresh listing no longer contains those resources. Seven-day expiry
@@ -123,5 +123,10 @@ required, including prompt-injection evaluation.
    explicit authorization. ADC may be shared with other work; do not revoke it
    automatically.
 
-The application has no destructive cleanup command. Actual cleanup remains
-unverified until observed against the approved dedicated resources.
+The application has no destructive cleanup command. For the first smoke test,
+an explicitly approved operator cleanup removed the five source tables and empty
+dataset; fresh API reads verified removal. Six provider-managed temporary query
+results remain with a recorded expiry on the following day. Google documents
+[no storage charge for cached query-result tables](https://docs.cloud.google.com/bigquery/docs/cached-results).
+The [smoke-test record](cloud-smoke-test.md#cleanup-and-remaining-scope) preserves
+this distinction. Final charges and credit application remain unverified.

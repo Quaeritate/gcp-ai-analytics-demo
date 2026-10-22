@@ -394,11 +394,27 @@
     "billing_records_verified": false
   },
   "cleanup": {
-    "status": "pending_approval",
+    "status": "verified_complete",
     "demonstration_table_count": 5,
-    "configured_table_expiry_days": 7,
-    "fresh_resource_removal_verified": false,
-    "note": "Resource removal awaits approval. Configured expiry is a fallback, not evidence of deletion."
+    "deleted_table_count": 5,
+    "dataset_deleted": true,
+    "fresh_remaining_table_count_before_dataset_deletion": 0,
+    "fresh_resource_removal_verified": true,
+    "completed_at": "2026-10-22T20:31:22.193671+00:00",
+    "fresh_dataset_listing_observed_at": "2026-10-22T20:32:02.837853+00:00",
+    "demo_dataset_present_in_fresh_listing": false,
+    "project_retained": true,
+    "billing_link_retained": true,
+    "local_evidence_retained": true,
+    "note": "Explicitly approved deletion of the five source tables and then the empty dataset. Fresh reads verified removal; project, billing and local evidence retained.",
+    "provider_managed_query_results": {
+      "remaining_table_count": 6,
+      "matched_to_completed_query_jobs": true,
+      "latest_recorded_expiry": "2026-10-23T20:17:47.647000+00:00",
+      "expiry_observed": false,
+      "note": "Temporary query-result tables in an anonymous dataset were left to provider-managed expiry; this is separate from source-table cleanup.",
+      "storage_pricing_source": "https://docs.cloud.google.com/bigquery/docs/cached-results"
+    }
   },
   "limitations": [
     "The original combined CLI run rejected its model output; subsequent successful schema/reference validation came from a manual model-only follow-up.",
@@ -409,6 +425,6 @@
     "The HTML dashboard remains a labeled local reference report.",
     "No real server collection, notification, command execution or remediation occurred.",
     "No recurring cloud schedule or continuously running cloud server was deployed.",
-    "Owner review, final billed cost and verified cleanup remain pending."
+    "Owner review and final billed cost remain pending; temporary query-result expiry is configured but not yet observed."
   ]
 }

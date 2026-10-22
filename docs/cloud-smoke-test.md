@@ -134,9 +134,19 @@ prompt plus candidate tokens. Delayed billing records remain unverified.
 
 ## Cleanup and remaining scope
 
-Resource removal is **pending approval**. Five demonstration tables were created
-with seven-day expiration. Configured expiration is a fallback and does not
-prove deletion; fresh removal verification has not yet been recorded.
+The five demonstration tables and their now-empty dataset were **deleted and
+verified absent on October 22, 2026 at 20:31 UTC**, after explicit owner approval.
+Each table returned NotFound after deletion; a fresh listing showed zero tables
+before non-recursive dataset deletion, and a subsequent dataset listing confirmed
+its absence. The project, billing link and local evidence were retained.
+
+One anonymous dataset remains with six temporary query-result tables, matched to
+the six completed query jobs. Their recorded expiry times are October 23, 2026
+around 20:17 UTC. These provider-managed results were left to expire; they are
+not the five loaded source tables. Google documents
+[no storage charge for temporary cached query results](https://docs.cloud.google.com/bigquery/docs/cached-results).
+Their future expiry has not yet been observed. Deletion of the source tables
+does not establish a finalized bill or erase cloud job history.
 
 No recurring schedule, cloud VM or hosted application service was deployed.
 The dashboard remains a labeled local reference. This test used only generated
@@ -145,5 +155,5 @@ remediation.
 
 The separate **24-case live model evaluation was not run**. One dataset and
 three attempts do not establish model reliability, production readiness or
-measured business impact. Owner review, the uncertainty-label limitation,
-verified cleanup and final billing remain outstanding.
+measured business impact. Owner review, the uncertainty-label limitation and
+final billing remain outstanding.

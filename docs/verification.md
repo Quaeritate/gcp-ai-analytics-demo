@@ -19,7 +19,7 @@
 | Evaluation corpus | 24 fixtures validated locally; zero corpus inference requests; corpus-wide model accuracy unmeasured |
 | SDK behavior | In-process HTTP tests check schema serialization, disabled retry/continuation and ADC precedence over ambient test keys |
 | Public content review | Outgoing files checked for credential patterns, private paths and infrastructure context; fixtures are generated synthetic data |
-| Hosted CI | **Passed on Windows and Linux**, Python 3.12, for implementation commit `52a35f5`; [observed run](https://github.com/Quaeritate/gcp-ai-analytics-demo/actions/runs/39834905000) |
+| Hosted CI | **Passed on Windows and Linux**, Python 3.12, for cloud-verification/fix commit `ff61ed7`; [observed run](https://github.com/Quaeritate/gcp-ai-analytics-demo/actions/runs/39849132313) |
 
 Published at [Quaeritate/gcp-ai-analytics-demo](https://github.com/Quaeritate/gcp-ai-analytics-demo).
 Commit author and committer: **Matej Bicej**. The hosted workflow also reproduced
@@ -88,6 +88,12 @@ slots, where the prompt requests `insufficient_data`; retain this review caveat.
 The [sanitized receipt](../examples/synthetic/cloud-smoke-test.json) preserves
 usage, attempt history and the response. No human scores are claimed.
 
+After explicit owner approval, all five source tables and the empty dataset were
+deleted and freshly verified absent on October 22, 2026 at 20:31 UTC. The project
+and billing link remain active. Six provider-managed query-result tables in an
+anonymous dataset remain until their recorded expiry the following day; they
+were matched to the six query jobs. See the [cleanup record](cloud-smoke-test.md#cleanup-and-remaining-scope).
+
 ## Remaining evidence
 
 | Capability | Still required |
@@ -96,7 +102,6 @@ usage, attempt history and the response. No human scores are claimed.
 | Revised combined CLI | A new full cloud run after the instruction clarification, if separately justified and approved |
 | Runtime IAM | This smoke used the project owner's ADC; a dedicated least-privilege runtime identity has not been validated |
 | Billing | Final charge and credit records after Google's reporting delay; list-price usage is an estimate |
-| Cleanup | Explicit deletion approval and fresh resource-removal evidence; see the current smoke-test record |
 | Server integration | Separately qualified private metadata source; no live collector implemented |
 
 The supported claim is a tested synthetic analytics application with observed
