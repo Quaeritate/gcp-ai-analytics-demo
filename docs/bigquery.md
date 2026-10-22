@@ -3,11 +3,12 @@
 The BigQuery stage is implemented as an optional, bounded execution path. It
 exports five normalized tables, joins service policies through a typed query
 parameter, runs six fixed analyses, and compares the result with the independent
-Python calculations. **The SQL and real cloud path have not been executed against
-BigQuery.** Offline tests exercise export integrity, SDK request configuration,
+Python calculations. **The October 22, 2026 live smoke test loaded 2,513 records,
+executed all six queries in US and matched 189 metrics with zero mismatches.**
+The [observed evidence](cloud-smoke-test.md) records actual bytes and limitations.
+Offline tests separately exercise export integrity, SDK request configuration,
 hand-calculated response comparisons, failures and request budgets using a fake
-client. They do not establish SQL syntax acceptance, IAM, regional compatibility,
-actual costs or cloud cleanup.
+client. A single live fixture does not establish correctness for all inputs.
 
 ## Local preparation
 
@@ -159,4 +160,5 @@ SDK behavior was checked locally against installed method signatures. The
 official references for [parameterized queries](https://docs.cloud.google.com/bigquery/docs/parameterized-queries),
 [query configuration and dry runs](https://docs.cloud.google.com/bigquery/docs/running-queries),
 and [Python query parameter types](https://docs.cloud.google.com/python/docs/reference/bigquery/latest/query)
-were consulted on October 22, 2026. Actual cloud verification remains pending.
+were consulted on October 22, 2026. See the [live smoke test](cloud-smoke-test.md)
+for the observed execution, separate from those documentation checks.

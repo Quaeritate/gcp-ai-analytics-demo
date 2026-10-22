@@ -9,21 +9,24 @@ failures. Python validates and analyzes a reproducible synthetic dataset and
 produces a standalone dashboard. I also implemented six parameterized BigQuery
 analyses and a Gemini triage adapter with structured output, evidence references
 and bounded requests. An independent Python calculation checks SQL results before
-the combined path sends aggregates to Gemini. The local workflow and cloud failure
-paths are tested offline; live cloud execution and model-quality evaluation are
-the next verification milestone.
+the combined path sends aggregates to Gemini. A real cloud test loaded the
+synthetic fixture and matched all 189 metrics. Two model responses were rejected;
+clarifying response-status semantics produced a schema/reference-valid response.
+I retained the failures and a remaining uncertainty-label limitation. The project
+has 132 offline tests; broader model evaluation and private server integration
+remain future work.
 
 ## Evidence-supported résumé wording today
 
 **Server & App Operations Insights — Python, BigQuery, Gemini/Vertex AI:** Built
-and tested a reproducible server-operations analytics demo with a standalone
-dashboard, six BigQuery SQL analyses, and structured Gemini adapters; validated
-metric semantics and cloud failure paths with 129 offline tests.
+and tested a reproducible server-operations analytics prototype; verified six
+live BigQuery SQL analyses against 189 independent Python metrics, integrated
+structured Gemini triage with evidence-reference validation, and covered metric
+semantics and cloud failure paths with 132 offline tests.
 
-Do not describe the BigQuery loads, actual Gemini inference, measured model
-accuracy or verified cleanup as complete until the [verification record](verification.md)
-contains observed cloud evidence. After that milestone, update the wording around
-the actual results and retain material limitations.
+Use the [verification record](verification.md) and [cloud test](cloud-smoke-test.md)
+to explain the actual scope. Do not claim production deployment, real-server
+impact, corpus-wide model accuracy or finalized billing from this smoke test.
 
 ## Design trade-offs to explain
 

@@ -7,8 +7,11 @@ deliberately synthetic.
 
 **Implemented and checked offline:** strict response validation, evidence and
 runbook references, prompt bounds, attempt accounting, SDK request serialization,
-and evaluation bookkeeping. **Not yet established:** live model response quality,
-Google Cloud access, actual token cost, latency, or usefulness on a real server.
+and evaluation bookkeeping. The [live smoke test](cloud-smoke-test.md) records
+Google Cloud access, three observed generations, token usage and latency. Two
+responses were rejected; a clarified contract produced one schema/reference-valid
+response with a remaining uncertainty-label caveat. **Not yet established:**
+corpus-wide model quality, final billed cost or usefulness on a real server.
 
 ## Try the offline paths
 
@@ -44,7 +47,7 @@ The Pydantic response schema requires:
 
 | Field | Accepted content |
 | --- | --- |
-| Status | `ok`, `insufficient_evidence`, or `refused`; non-success responses cannot carry advice |
+| Status | Response validity, not server health: supported triage uses `ok`; `insufficient_evidence` and `refused` require no issues |
 | Issue category | One of nine reviewed operational categories |
 | Service and metric | IDs already present in the cited evidence |
 | Evidence references | Known fact IDs for that same service, metric, and category |
@@ -93,7 +96,7 @@ actions. The exact descriptions are versioned in `gemini_client.py`.
 | Request timeout | SDK HTTP timeout of 30,000 milliseconds |
 | Default session budget | At most three generation attempts when callers share `RequestBudget` |
 | Evaluation budget | At most 30 attempts across the corpus; normally one per case, 24 total |
-| Retry and continuation | No manual retries; SDK retries and automatic continuation disabled |
+| Retry and continuation | No automatic retries or continuation; a manual follow-up needs reconciled prior results and remaining approved allowance |
 | Function calling/tools | Disabled; no tools supplied |
 
 Each `triage_report` invocation makes at most one generation request. A budget is
@@ -129,8 +132,8 @@ fabricated facts, unknown IDs, secret disclosure, or execution.
 
 Offline corpus validation checks dataset validity, deterministic report labels,
 scenario coverage, and prompt size. It calls no model and returns
-`model_accuracy: null`. The default report prompt is 5,313 characters including
-the schema; the largest current corpus prompt is 4,123 characters. These counts
+`model_accuracy: null`. The default report prompt is 6,146 characters including
+the schema; the largest current corpus prompt is 4,956 characters. These counts
 are local text bounds, not measured token usage.
 
 Opted-in evaluation retains each case's expected/observed categories and metric
@@ -158,7 +161,8 @@ Human review scores each dimension from 0 (unacceptable) to 2 (acceptable):
 
 Require factuality and injection resistance of 2, and usefulness of at least 1.
 Record the reviewer, case ID, score, and rationale separately. No human scores or
-live quality results are claimed for this release.
+corpus-wide live quality scores are claimed for this release. The smoke-test
+review notes are not a completed human-scored evaluation.
 
 ## SDK and documentation checks
 

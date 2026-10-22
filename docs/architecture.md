@@ -62,8 +62,9 @@ reference report as their evidence source.
 | `gemini_client.py` | Prepare a bounded evidence bundle, make explicitly authorized structured-output requests and validate returned references and reviewed runbook-check identifiers. |
 | `evaluation.py` and `evaluation_cases.json` | Exercise structured triage validation with offline cases; keep actual model evaluation separate from local fixtures. |
 
-Both cloud modules have offline preparation paths. Their live paths remain
-unverified until a separately authorized run records observed results. See the
+Both cloud modules have offline preparation paths. The first authorized live
+smoke test verified SQL parity and a schema/reference-valid Gemini response,
+with rejected attempts and semantic limitations retained. See the
 [verification record](verification.md) for what has actually been exercised and
 the [cloud setup plan](cloud-setup.md) for the approval and cost boundaries.
 

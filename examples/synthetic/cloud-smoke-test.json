@@ -1,0 +1,414 @@
+{
+  "schema_version": 1,
+  "owner": "Matej Bicej",
+  "record_type": "sanitized_live_cloud_smoke_test",
+  "execution_date_utc": "2026-10-22",
+  "data_classification": "synthetic",
+  "execution_observed": "live Google Cloud operations over generated synthetic records",
+  "source": {
+    "base_commit": "2d94c6e3704be61cd0a8d7b7a28a7dd6669a84f5",
+    "dataset_sha256": "23f6b84366462fc39a859150127a397d874ce749ade44afca5e293d37db8d68c",
+    "final_gemini_client_sha256": "4ecf3897d7626cf0312e0a72940a3bd862655348d97883ab2fce5cd70fa26486",
+    "final_code_state": "Base commit plus response-status clarification in gemini_client.py; no validator relaxation."
+  },
+  "warehouse": {
+    "location": "US",
+    "load_count": 5,
+    "loaded_rows": 2513,
+    "loads": [
+      {
+        "table_alias": "checks",
+        "output_rows": 1980,
+        "state": "observed_complete"
+      },
+      {
+        "table_alias": "resources",
+        "output_rows": 337,
+        "state": "observed_complete"
+      },
+      {
+        "table_alias": "backups",
+        "output_rows": 81,
+        "state": "observed_complete"
+      },
+      {
+        "table_alias": "restore_tests",
+        "output_rows": 3,
+        "state": "observed_complete"
+      },
+      {
+        "table_alias": "jobs",
+        "output_rows": 112,
+        "state": "observed_complete"
+      }
+    ],
+    "dry_run_count": 6,
+    "query_count": 6,
+    "query_results": [
+      {
+        "analysis": "checks",
+        "service_rows": 3,
+        "total_bytes_processed": 98124,
+        "total_bytes_billed": 10485760,
+        "cache_hit": false,
+        "state": "observed_complete"
+      },
+      {
+        "analysis": "freshness",
+        "service_rows": 3,
+        "total_bytes_processed": 40140,
+        "total_bytes_billed": 20971520,
+        "cache_hit": false,
+        "state": "observed_complete"
+      },
+      {
+        "analysis": "resources",
+        "service_rows": 3,
+        "total_bytes_processed": 32584,
+        "total_bytes_billed": 10485760,
+        "cache_hit": false,
+        "state": "observed_complete"
+      },
+      {
+        "analysis": "backups",
+        "service_rows": 3,
+        "total_bytes_processed": 4512,
+        "total_bytes_billed": 10485760,
+        "cache_hit": false,
+        "state": "observed_complete"
+      },
+      {
+        "analysis": "restore_tests",
+        "service_rows": 3,
+        "total_bytes_processed": 128,
+        "total_bytes_billed": 10485760,
+        "cache_hit": false,
+        "state": "observed_complete"
+      },
+      {
+        "analysis": "jobs",
+        "service_rows": 3,
+        "total_bytes_processed": 9748,
+        "total_bytes_billed": 10485760,
+        "cache_hit": false,
+        "state": "observed_complete"
+      }
+    ],
+    "total_bytes_processed": 185236,
+    "total_bytes_billed": 73400320,
+    "maximum_bytes_billed_per_query": 100000000,
+    "comparison": {
+      "matches": true,
+      "metrics_compared": 189,
+      "mismatches": []
+    },
+    "independent_local_recomparison": "189 metrics agree; no mismatches",
+    "observed_logical_storage_bytes": 146104,
+    "fresh_job_metadata_check": {
+      "load_jobs_done": 5,
+      "query_jobs_done": 6,
+      "errors_observed": false
+    }
+  },
+  "generation": {
+    "backend": "Google Cloud via the Google Gen AI SDK",
+    "location": "global",
+    "api_version": "v1",
+    "response_model_version": "gemini-3.5-flash-lite",
+    "thinking_level": "MINIMAL",
+    "max_output_tokens": 1024,
+    "automatic_retries": 0,
+    "automatic_continuation": false,
+    "tool_execution": false,
+    "attempt_count": 3,
+    "attempts": [
+      {
+        "attempt": 1,
+        "workflow": "original combined cloud-demo",
+        "mode": "live",
+        "status": "invalid_response",
+        "finish_reason": "STOP",
+        "prompt_characters": 5292,
+        "attempted_requests": 1,
+        "usage": {
+          "prompt_token_count": 1625,
+          "candidates_token_count": 398,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 2023
+        },
+        "outcome_note": "Rejected by schema/evidence validation; raw response was not retained, so the exact offending field is unknown.",
+        "adapter_elapsed_ms": 2547.807
+      },
+      {
+        "attempt": 2,
+        "workflow": "manual model-only follow-up reusing verified SQL evidence",
+        "mode": "live",
+        "status": "invalid_response",
+        "finish_reason": "STOP",
+        "prompt_characters": 5292,
+        "attempted_requests": 1,
+        "usage": {
+          "prompt_token_count": 1628,
+          "candidates_token_count": 600,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 2228
+        },
+        "outcome_note": "Rejected: top-level insufficient_evidence accompanied six issues; non-ok status requires an empty issues list.",
+        "adapter_elapsed_ms": 2809.688
+      },
+      {
+        "attempt": 3,
+        "workflow": "manual model-only follow-up reusing verified SQL evidence",
+        "mode": "live",
+        "status": "ok",
+        "finish_reason": "STOP",
+        "prompt_characters": 6125,
+        "attempted_requests": 1,
+        "usage": {
+          "prompt_token_count": 1798,
+          "candidates_token_count": 668,
+          "thoughts_token_count": null,
+          "cached_content_token_count": null,
+          "total_token_count": 2466
+        },
+        "outcome_note": "Schema and reference checks passed after clarifying response-status instructions; semantic caveats remain.",
+        "adapter_elapsed_ms": 3089.246
+      }
+    ],
+    "total_prompt_tokens": 5051,
+    "total_candidate_tokens": 1666,
+    "total_reported_tokens": 6717,
+    "final_response": {
+      "status": "ok",
+      "refusal_reason": null,
+      "issues": [
+        {
+          "service_id": "compute",
+          "metric_id": "pool_degraded",
+          "category": "storage_health",
+          "evidence_refs": [
+            "fact_1"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Storage pool state is degraded.",
+          "next_check_ids": [
+            "review_storage_evidence"
+          ]
+        },
+        {
+          "service_id": "documents",
+          "metric_id": "free_inodes_low",
+          "category": "storage_health",
+          "evidence_refs": [
+            "fact_2"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Available file inodes percentage is low.",
+          "next_check_ids": [
+            "review_storage_evidence"
+          ]
+        },
+        {
+          "service_id": "documents",
+          "metric_id": "latest_check_down",
+          "category": "availability",
+          "evidence_refs": [
+            "fact_3"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Latest service check status is down.",
+          "next_check_ids": [
+            "review_service_checks"
+          ]
+        },
+        {
+          "service_id": "photos",
+          "metric_id": "latest_restore_failed",
+          "category": "restore_readiness",
+          "evidence_refs": [
+            "fact_4"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Latest restore attempt failed without a recent passed restore.",
+          "next_check_ids": [
+            "review_restore_evidence"
+          ]
+        },
+        {
+          "service_id": "compute",
+          "metric_id": "monitoring_coverage_gap",
+          "category": "monitoring",
+          "evidence_refs": [
+            "fact_5"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Monitoring coverage exhibits gaps with unknown slots.",
+          "next_check_ids": [
+            "review_monitoring_evidence"
+          ]
+        },
+        {
+          "service_id": "compute",
+          "metric_id": "restore_test_overdue",
+          "category": "restore_readiness",
+          "evidence_refs": [
+            "fact_6"
+          ],
+          "uncertainty": "observed_condition_only",
+          "explanation": "Restore testing has exceeded the maximum age threshold.",
+          "next_check_ids": [
+            "review_restore_evidence"
+          ]
+        }
+      ]
+    },
+    "evidence": {
+      "window_start": "2026-09-21T00:00:00+00:00",
+      "as_of": "2026-10-19T00:00:00+00:00",
+      "service_ids": [
+        "compute",
+        "documents",
+        "photos"
+      ],
+      "total_findings": 21,
+      "omitted_findings": 15,
+      "facts": [
+        {
+          "fact_id": "fact_1",
+          "service_id": "compute",
+          "metric_id": "pool_degraded",
+          "category": "storage_health",
+          "severity": "critical",
+          "values": {
+            "is_fresh": true,
+            "latest_age_hours": 1.0,
+            "latest_observed_at": "2026-10-18T23:00:00+00:00",
+            "pool_health": "degraded"
+          }
+        },
+        {
+          "fact_id": "fact_2",
+          "service_id": "documents",
+          "metric_id": "free_inodes_low",
+          "category": "storage_health",
+          "severity": "critical",
+          "values": {
+            "disk_free_inodes_pct": 4.0,
+            "is_fresh": true,
+            "latest_age_hours": 1.0,
+            "latest_observed_at": "2026-10-18T23:00:00+00:00"
+          }
+        },
+        {
+          "fact_id": "fact_3",
+          "service_id": "documents",
+          "metric_id": "latest_check_down",
+          "category": "availability",
+          "severity": "critical",
+          "values": {
+            "is_fresh": true,
+            "latest_age_hours": 1.0,
+            "latest_observed_at": "2026-10-18T23:00:00+00:00",
+            "latest_status": "down"
+          }
+        },
+        {
+          "fact_id": "fact_4",
+          "service_id": "photos",
+          "metric_id": "latest_restore_failed",
+          "category": "restore_readiness",
+          "severity": "critical",
+          "values": {
+            "last_passed_restore_at": null,
+            "latest_restore_at": "2026-10-17T00:00:00+00:00",
+            "latest_restore_outcome": "failed"
+          }
+        },
+        {
+          "fact_id": "fact_5",
+          "service_id": "compute",
+          "metric_id": "monitoring_coverage_gap",
+          "category": "monitoring",
+          "severity": "warning",
+          "values": {
+            "expected_slots": 672,
+            "known_status_slots": 659,
+            "missing_slots": 0,
+            "monitoring_coverage_pct": 98.07,
+            "unknown_slots": 13
+          }
+        },
+        {
+          "fact_id": "fact_6",
+          "service_id": "compute",
+          "metric_id": "restore_test_overdue",
+          "category": "restore_readiness",
+          "severity": "warning",
+          "values": {
+            "last_passed_restore_age_days": 40.0,
+            "last_passed_restore_at": "2026-09-09T00:00:00+00:00",
+            "restore_is_overdue": true,
+            "restore_max_age_days": 30.0
+          }
+        }
+      ]
+    },
+    "review_notes": [
+      {
+        "metric_id": "monitoring_coverage_gap",
+        "finding": "The returned uncertainty is observed_condition_only despite unknown slots; the prompt requested insufficient_data for unknown evidence. Schema/reference checks accept the enum but do not enforce this semantic rule.",
+        "disposition": "Unresolved review caveat; original response preserved."
+      },
+      {
+        "metric_id": "latest_restore_failed",
+        "finding": "The phrase without a recent passed restore should be read as no passed restore recorded in the supplied evidence. It does not establish that no successful restore occurred outside this dataset.",
+        "disposition": "Evidence-scope qualification; original response preserved."
+      }
+    ],
+    "review_status": "Schema/reference validation passed; review notes do not establish full semantic acceptance or owner review.",
+    "latency_note": "Adapter elapsed time includes client and credential preparation plus generation, measured before client close; these three observations are not a latency benchmark."
+  },
+  "cost_estimate": {
+    "currency": "USD",
+    "classification": "list-price calculation from recorded usage, not an invoice",
+    "price_check_date": "2026-10-22",
+    "bigquery_usd_per_tib": 6.25,
+    "gemini_input_usd_per_million_tokens": 0.3,
+    "gemini_output_usd_per_million_tokens": 2.5,
+    "bigquery_query_estimate_usd": 0.0004172325134277344,
+    "gemini_estimate_usd": 0.0056803,
+    "combined_query_and_generation_estimate_usd": 0.0060975325134277345,
+    "exclusions": [
+      "free allowances or credits",
+      "storage",
+      "taxes",
+      "currency conversion"
+    ],
+    "usage_note": "Estimate uses reported prompt and candidate counts. Reasoning/cache counts were null, not asserted zero. Each reported total equals prompt plus candidate tokens.",
+    "sources": [
+      "https://cloud.google.com/bigquery/pricing",
+      "https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing"
+    ],
+    "billing_records_verified": false
+  },
+  "cleanup": {
+    "status": "pending_approval",
+    "demonstration_table_count": 5,
+    "configured_table_expiry_days": 7,
+    "fresh_resource_removal_verified": false,
+    "note": "Resource removal awaits approval. Configured expiry is a fallback, not evidence of deletion."
+  },
+  "limitations": [
+    "The original combined CLI run rejected its model output; subsequent successful schema/reference validation came from a manual model-only follow-up.",
+    "Two manual follow-ups reused the already verified SQL results; BigQuery was not rerun.",
+    "One dataset and three model attempts do not measure model reliability or accuracy.",
+    "The separate 24-case live model evaluation was not run.",
+    "The model saw six selected findings; fifteen findings were omitted.",
+    "The HTML dashboard remains a labeled local reference report.",
+    "No real server collection, notification, command execution or remediation occurred.",
+    "No recurring cloud schedule or continuously running cloud server was deployed.",
+    "Owner review, final billed cost and verified cleanup remain pending."
+  ]
+}

@@ -2,7 +2,8 @@
 
 Prices checked **October 22, 2026**. USD illustrations below use public list
 prices and exclude taxes, currency conversion and unrelated account workloads.
-No cloud charges have been measured for this project because it has not run live.
+The [first live smoke test](cloud-smoke-test.md) recorded query/token usage;
+final billed charges are still pending and are distinct from list-price estimates.
 
 ## What costs money
 
@@ -76,6 +77,21 @@ Budget alerts can be set at a small monthly amount (for example $5 with
 [ordinary budget alerts do not cap spending](https://docs.cloud.google.com/billing/docs/how-to/budgets).
 A budget amount is not authorization to consume it. There is no account-wide
 spending cap enforced by this program.
+
+## Observed first-test usage
+
+The six real queries billed 73,400,320 bytes. Three model attempts used 5,051
+reported input tokens and 1,666 candidate output tokens in total; the first two
+responses were rejected by application validation. All attempts count toward
+usage. At the rates above, the combined query/inference estimate is **$0.00609753**,
+before storage, taxes, free allowances and credits. BigQuery reported 146,104
+logical storage bytes. This is measured usage with an estimated list-price cost,
+not an invoice or a guarantee of a zero card charge.
+
+Any credit application and residual charges require delayed billing records.
+No recurring workflow was set
+up. Do not upgrade an account or provision additional services merely to reproduce
+these results without reviewing the changed cost scope.
 
 ## Data and execution boundaries
 

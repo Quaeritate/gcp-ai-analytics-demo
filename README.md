@@ -14,9 +14,14 @@ structured Gemini triage through Google Cloud / Vertex AI.
 
 **Working today:** deterministic local analytics, JSON/Markdown/HTML reports,
 validated warehouse exports, bounded cloud adapters and offline tests.
-**Live verification pending:** BigQuery execution, Gemini model quality, cloud
-billing and cleanup. All published data and screenshots are synthetic.
-See the [verification record](docs/verification.md) for the evidence boundary.
+**Cloud smoke test observed:** five BigQuery loads, six SQL queries and **189
+matching metrics**. Gemini returned a schema/reference-valid result after two
+rejected attempts and an instruction clarification; one uncertainty-label issue
+remains documented. Published operational records and dashboard screenshots are
+synthetic; cloud usage measurements are real.
+Read the [cloud test and limitations](docs/cloud-smoke-test.md) and
+[verification record](docs/verification.md). Full model evaluation and private
+server integration remain future work.
 
 ## Why this project
 
@@ -109,7 +114,9 @@ validation is **not measured model accuracy**.
 See [cloud setup](docs/cloud-setup.md) for opt-in commands and
 [costs, security and cleanup](docs/security-and-costs.md) for the request limits.
 The local demo has no cloud charge. A bounded cloud smoke test is estimated at
-roughly a few cents under the documented assumptions; no live bill is claimed.
+roughly a few cents under the documented assumptions. Observed query and token
+usage for the first test corresponds to **about $0.0061 at list prices**, before
+storage, taxes, free allowances and credits; this is not a finalized bill.
 
 ## Validation and project map
 

@@ -1,7 +1,8 @@
 # Optional Google Cloud setup
 
-The repository works locally without a Google Cloud account. The cloud adapters
-are implemented and tested offline; actual API execution remains unverified.
+The repository works locally without a Google Cloud account. A bounded live
+[smoke test](cloud-smoke-test.md) verified BigQuery execution and Gemini access,
+including rejected responses and a documented model limitation.
 Review the [cost and resource plan](security-and-costs.md) before a live run.
 
 ## Dedicated project and credentials

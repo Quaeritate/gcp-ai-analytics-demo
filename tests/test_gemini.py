@@ -191,6 +191,33 @@ def test_refusal_does_not_become_accepted_advice():
     assert result.response is None
 
 
+@pytest.mark.parametrize("status", ["insufficient_evidence", "refused"])
+def test_non_ok_status_with_otherwise_supported_issues_is_rejected(status):
+    # Reproduce the live response shape that confused triage validity with uncertainty.
+    report = build_report(generate_dataset())
+    payload = supported_payload(report)
+    assert len(payload["issues"]) == 6
+    payload["status"] = status
+    client = FakeClient(raw_response(payload))
+    result = triage_report(report, client=client)
+    assert result.status == "invalid_response"
+    assert result.response is None
+    assert result.attempted_requests == len(client.calls) == 1
+
+
+def test_missing_observations_allow_valid_triage_with_issue_level_uncertainty():
+    report = report_for("checks_missing")
+    payload = supported_payload(report)
+    for issue in payload["issues"]:
+        issue["uncertainty"] = "insufficient_data"
+        issue["explanation"] = "Missing observations prevent assessing service health."
+    result = triage_report(report, client=FakeClient(raw_response(payload)))
+    assert result.status == "ok"
+    assert result.response.refusal_reason is None
+    assert result.response.issues
+    assert all(issue.uncertainty == "insufficient_data" for issue in result.response.issues)
+
+
 def test_timeouts_and_failures_consume_shared_budget_without_hidden_retries():
     client = FakeClient(error=TimeoutError("private-credential-must-not-be-recorded"))
     budget = RequestBudget(2)
